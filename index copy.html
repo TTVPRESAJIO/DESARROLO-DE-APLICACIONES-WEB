@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Life</title>
+    <style>
+        /* --- ESTILOS GENERALES Y PALETA DE COLORES --- */
+        :root {
+            --verde-principal: #2e7d32;
+            --amarillo-solar: #fbc02d;
+            --oscuro: #1c2833;
+            --gris-claro: #f4f6f7;
+            --blanco: #ffffff;
+            --texto: #34495e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--texto);
+            background-color: var(--gris-claro);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: linear-gradient(135deg, var(--oscuro) 0%, var(--verde-principal) 100%);
+            color: var(--blanco);
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 4px solid var(--amarillo-solar);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* --- MENÚ DE NAVEGACIÓN --- */
+        nav {
+            background-color: var(--oscuro);
+            sticky: top;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            display: block;
+            color: var(--blanco);
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--verde-principal);
+            color: var(--amarillo-solar);
+        }
+
+        /* --- DISEÑO EN COLUMNAS (MAIN + ASIDE) --- */
+        .contenedor-principal {
+            display: flex;
+            flex-direction: row;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        main {
+            flex: 3;
+        }
+
+        aside {
+            flex: 1;
+            background-color: var(--blanco);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--verde-principal);
+            height: fit-content;
+        }
+
+        aside h3 {
+            color: var(--verde-principal);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--gris-claro);
+            padding-bottom: 0.5rem;
+        }
+
+        aside p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            background: var(--gris-claro);
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* --- SECCIONES Y ARTÍCULOS --- */
+        section {
+            background-color: var(--blanco);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        section h2 {
+            color: var(--verde-principal);
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--amarillo-solar);
+        }
+
+        /* --- AJUSTES ESPECÍFICOS DE SECCIONES --- */
+        /* Quiénes Somos */
+        #quienes-somos article {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        #quienes-somos img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Servicios */
+        #servicios ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        #servicios ul li {
+            background-color: var(--gris-claro);
+            padding: 1rem;
+            border-left: 4px solid var(--amarillo-solar);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* Contacto */
+        #contacto p {
+            margin-bottom: 0.8rem;
+        }
+
+        #contacto h3 {
+            margin: 1.5rem 0 0.8rem 0;
+            color: var(--oscuro);
+        }
+
+        #contacto a {
+            color: var(--verde-principal);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #contacto a:hover {
+            text-decoration: underline;
+        }
+
+        /* Video Responsivo */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--oscuro);
+            color: var(--blanco);
+            text-align: center;
+            padding: 1.5rem 1rem;
+            font-size: 0.9rem;
+            margin-top: auto;
+            border-top: 3px solid var(--verde-principal);
+        }
+
+        /* --- RESPONSIVIDAD (MÓVILES) --- */
+        @media (max-width: 768px) {
+            .contenedor-principal {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul li a {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Electric Life</h1>
+        <p>Soluciones solares de respaldo para hogares y pequeños negocios.</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#quienes-somos">Quiénes Somos</a></li>
+            <li><a href="#servicios">Servicios y Productos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Agrupamos MAIN y ASIDE en un contenedor flexible para romper la linealidad -->
+    <div class="contenedor-principal">
+
+        <main>
+            <section id="inicio">
+                <h2>Inicio</h2>
+                <article>
+                    <p>
+                        Bienvenido a Electric Life, un emprendimiento enfocado en brindar
+                        soluciones energéticas innovadoras mediante sistemas solares de
+                        respaldo. Nuestro objetivo es ayudar a hogares y pequeños negocios
+                        a mantener operativos sus servicios esenciales durante cortes de
+                        energía eléctrica, garantizando conectividad, iluminación y seguridad
+                        con tecnologías limpias, silenciosas y amigables con el medio ambiente.
+                    </p>
+                </article>
+            </section>
+
+            <section id="quienes-somos">
+                <h2>Quiénes Somos</h2>
+                <article>
+                    <p>
+                        Electric Life nace como una respuesta a los frecuentes cortes de energía
+                        eléctrica que afectan a hogares y pequeños negocios en Ecuador. Nuestro
+                        emprendimiento se especializa en la venta, instalación y mantenimiento
+                        de sistemas solares de respaldo diseñados para alimentar equipos críticos
+                        como routers de internet, iluminación LED, cámaras de seguridad y otros
+                        dispositivos electrónicos de bajo consumo. Buscamos ofrecer una alternativa
+                        accesible frente a los generadores tradicionales, reduciendo el ruido,
+                        la contaminación y la dependencia de combustibles fósiles. Nuestro enfoque
+                        se basa en brindar asesoría personalizada, soluciones adaptadas al presupuesto
+                        de cada cliente y un servicio técnico confiable. Creemos que la energía solar
+                        representa una oportunidad para mejorar la calidad de vida de las personas,
+                        impulsar la continuidad de actividades laborales y comerciales, y contribuir
+                        al desarrollo de un futuro más sostenible.
+                    </p>
+                    <img src="https://assets.turbologo.com/blog/es/2020/12/19131944/se-logo-design-958x575.png"
+                         alt="Logo Electric Life"
+                         width="500" height="300">
+                </article>
+            </section>
+
+            <section id="servicios">
+                <h2>Servicios y Productos</h2>
+                <article>
+                    <ul>
+                        <li>Venta de sistemas solares de respaldo.</li>
+                        <li>Instalación profesional de paneles solares.</li>
+                        <li>Mantenimiento preventivo y correctivo.</li>
+                        <li>Asesoría personalizada para hogares y negocios.</li>
+                        <li>Sistemas para mantener internet durante apagones.</li>
+                        <li>Soluciones para iluminación LED de emergencia.</li>
+                        <li>Respaldo energético para cámaras de seguridad.</li>
+                        <li>Evaluación de consumo y optimización energética.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section id="contacto">
+                <h2>Contacto</h2>
+                <article>
+                    <p><strong>Correo:</strong> fernandoquilligana@outlook.com</p>
+                    <p><strong>Teléfono:</strong> 0987544738</p>
+                    <p><strong>Dirección:</strong> Puyo, Barrio La Merced</p>
+
+                    <h3>Redes Sociales</h3>
+                    <p>
+                        <a href="https://facebook.com/electriclifeec" target="_blank">Facebook</a> |
+                        <a href="https://instagram.com/electriclife.ec" target="_blank">Instagram</a> |
+                        <a href="https://linkedin.com/company/electriclifeec" target="_blank">LinkedIn</a>
+                    </p>
+
+                    <h3>Video Informativo</h3>
+                    <!-- Envoltura para hacer el video responsivo -->
+                    <div class="video-container">
+                        <iframe
+                            src="https://www.youtube.com/embed/DA4A7odAU5Y"
+                            title="Electric Life"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <aside>
+            <h3>Información Adicional</h3>
+            <p>
+                <strong>Promoción de lanzamiento:</strong> Diagnóstico energético gratuito para los
+                primeros 20 clientes.
+            </p>
+            <p>
+                <strong>Horario de atención:</strong><br>
+                Lunes a Viernes de 08:00 a 18:00.
+            </p>
+            <p>
+                Garantía de instalación y soporte técnico especializado para todos
+                nuestros sistemas solares.
+            </p>
+        </aside>
+
+    </div> <!-- Fin del contenedor principal -->
+
+    <footer>
+        <p>
+            Daniel Fernando Allacuri Quilligana |
+            Desarrollo de Aplicaciones Web |
+            Universidad Estatal Amazónica |
+            2026
+        </p>
+    </footer>
+
+</body>
+</html>
