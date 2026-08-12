@@ -1,0 +1,12 @@
+# Entorno virtual de Python (no se sube al repositorio)
+venv/
+env/
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Configuracion local del editor
+.vscode/

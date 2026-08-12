@@ -1,0 +1,139 @@
+{# ===================================================================
+   base.html · Semana 9 (Flask + Jinja2)
+   PLANTILLA PRINCIPAL del proyecto.
+
+   Contiene los elementos comunes de todas las paginas del sistema:
+     - Enlaces de Bootstrap, iconos, fuentes y CSS propio (static/)
+     - Menu de navegacion (navbar)
+     - Zona de encabezado (hero)
+     - Zona de contenido principal  -> {% block content %}
+     - Pie de pagina (footer)
+     - Scripts de Bootstrap y JavaScript propio (static/)
+
+   Las demas plantillas la reutilizan con {% extends "base.html" %},
+   evitando repetir estas estructuras en cada archivo HTML.
+=================================================================== #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Electric Life · Soluciones solares de respaldo para hogares y pequeños negocios en Ecuador.">
+
+    {# Cada pagina hija define su propio titulo #}
+    <title>{% block title %}Electric Life{% endblock %}</title>
+
+    <!-- Bootstrap 5 (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+
+    {# CSS propio servido desde la carpeta static/ #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+    <!-- ===== CONTENEDOR DE NOTIFICACIONES (toasts) ===== -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ===================================================================
+         MENU DE NAVEGACION (comun a todas las paginas)
+         Los enlaces se generan con url_for() apuntando a las rutas Flask.
+    ==================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top" id="navbar-main">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="bi bi-lightning-charge-fill me-1"></i>Electric Life
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+                           href="{{ url_for('index') }}">
+                            <i class="bi bi-house-door me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'productos' %}active{% endif %}"
+                           href="{{ url_for('productos') }}">
+                            <i class="bi bi-box-seam me-1"></i>Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'clientes' %}active{% endif %}"
+                           href="{{ url_for('clientes') }}">
+                            <i class="bi bi-people me-1"></i>Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'proveedores' %}active{% endif %}"
+                           href="{{ url_for('proveedores') }}">
+                            <i class="bi bi-truck me-1"></i>Proveedores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'facturacion' %}active{% endif %}"
+                           href="{{ url_for('facturacion') }}">
+                            <i class="bi bi-receipt me-1"></i>Facturación
+                        </a>
+                    </li>
+
+                    {# Las paginas hijas pueden añadir enlaces propios aqui #}
+                    {% block nav_extra %}{% endblock %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== ENCABEZADO / HERO (opcional segun la pagina) ===== -->
+    <header>
+        {% block hero %}
+        <div class="hero-section hero-modulo">
+            <div class="container">
+                <h1>{% block hero_titulo %}Electric Life{% endblock %}</h1>
+                <p class="lead">{% block hero_texto %}Sistema de gestión{% endblock %}</p>
+            </div>
+        </div>
+        {% endblock %}
+    </header>
+
+    <!-- ===================================================================
+         CONTENIDO PRINCIPAL
+         Cada pagina hija rellena este bloque con su propio contenido.
+    ==================================================================== -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ===== PIE DE PAGINA (comun a todas las paginas) ===== -->
+    <footer>
+        <div class="container">
+            <p class="mb-1">
+                <strong>Daniel Fernando Allacuri Quilligana</strong>
+            </p>
+            <p class="mb-1">Desarrollo de Aplicaciones Web · Universidad Estatal Amazónica · 2026</p>
+            <p class="mb-0 mt-2" style="opacity: 0.6; font-size: 0.8rem;">
+                <i class="bi bi-lightning-charge-fill me-1" style="color: var(--amarillo);"></i>
+                &copy; 2026 Electric Life · Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS (bundle: incluye Popper para navbar, modal y alertas) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    {# JavaScript propio servido desde la carpeta static/ #}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+{# ===================================================================
+   clientes.html · Modulo de Clientes
+   Hereda de base.html mediante Jinja2.
+=================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Electric Life · Clientes{% endblock %}
+{% block hero_titulo %}Clientes{% endblock %}
+{% block hero_texto %}Registro de clientes que confían en nuestras soluciones solares.{% endblock %}
+
+{% block content %}
+<section class="bg-white">
+    <div class="container">
+
+        <!-- Resumen del modulo -->
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-lg-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_clientes }}</div>
+                    <div class="stat-label">Clientes registrados</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_activos }}</div>
+                    <div class="stat-label">Clientes activos</div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_clientes - total_activos }}</div>
+                    <div class="stat-label">Inactivos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2 class="section-title">Listado de Clientes</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        {% if clientes %}
+        <!-- ===== Tabla de clientes ===== -->
+        <div class="tabla-servicios-wrapper mb-5">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0 tabla-servicios">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col">Nombre / Razón social</th>
+                            <th scope="col">Cédula / RUC</th>
+                            <th scope="col">Contacto</th>
+                            <th scope="col">Ciudad</th>
+                            <th scope="col" class="text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in clientes %}
+                        <tr>
+                            <td class="text-center">{{ c.id }}</td>
+                            <td class="fw-semibold">
+                                <i class="bi bi-person-circle icono-celda me-2"></i>{{ c.nombre }}
+                            </td>
+                            <td class="text-muted small">{{ c.cedula }}</td>
+                            <td class="small">
+                                <i class="bi bi-envelope me-1 text-success"></i>{{ c.correo }}<br>
+                                <i class="bi bi-telephone me-1 text-success"></i>{{ c.telefono }}
+                            </td>
+                            <td>{{ c.ciudad }}</td>
+                            <td class="text-center">
+                                {# Condicion: color del estado del cliente #}
+                                {% if c.estado == 'Activo' %}
+                                    <span class="badge bg-success">{{ c.estado }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ c.estado }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== Tarjetas de clientes ===== -->
+        <div class="row g-4">
+            {% for c in clientes %}
+            <div class="col-sm-6 col-lg-4">
+                <div class="card registro-card h-100 shadow-sm border-0 border-top border-4
+                            {% if c.estado == 'Activo' %}border-success{% else %}border-secondary{% endif %}">
+                    <div class="card-body d-flex flex-column gap-2 p-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="registro-icon bg-success bg-opacity-10 text-success">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <h6 class="fw-bold mb-0" style="font-family:'Poppins',sans-serif;">{{ c.nombre }}</h6>
+                        </div>
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-geo-alt-fill me-1"></i>{{ c.ciudad }}
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-envelope-fill me-1"></i>{{ c.correo }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                            <small class="text-muted">{{ c.telefono }}</small>
+                            {% if c.estado == 'Activo' %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+            <div>Aún no hay clientes registrados.</div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

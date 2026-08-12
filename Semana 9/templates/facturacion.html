@@ -1,0 +1,120 @@
+{# ===================================================================
+   facturacion.html · Modulo de Facturacion
+   Hereda de base.html mediante Jinja2.
+=================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Electric Life · Facturación{% endblock %}
+{% block hero_titulo %}Facturación{% endblock %}
+{% block hero_texto %}Comprobantes emitidos por ventas e instalaciones.{% endblock %}
+
+{% block content %}
+<section class="bg-white">
+    <div class="container">
+
+        <!-- Resumen del modulo -->
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_facturas }}</div>
+                    <div class="stat-label">Facturas emitidas</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number" style="font-size: 1.6rem;">$ {{ '%.2f' | format(total_facturado) }}</div>
+                    <div class="stat-label">Total facturado</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_pendientes }}</div>
+                    <div class="stat-label">Pagos pendientes</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ facturas | selectattr('estado', 'equalto', 'Pagada') | list | length }}</div>
+                    <div class="stat-label">Facturas pagadas</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2 class="section-title">Comprobantes Emitidos</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        {# Condicion: aviso si existen pagos pendientes #}
+        {% if total_pendientes > 0 %}
+        <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-circle-fill me-2 fs-5"></i>
+            <div>
+                Existen <strong>{{ total_pendientes }}</strong> factura(s) con pago pendiente.
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <div>Todas las facturas se encuentran pagadas.</div>
+        </div>
+        {% endif %}
+
+        {% if facturas %}
+        <!-- ===== Tabla de facturas ===== -->
+        <div class="tabla-servicios-wrapper">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0 tabla-servicios">
+                    <thead>
+                        <tr>
+                            <th scope="col">N.º Factura</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col" class="text-center">Fecha</th>
+                            <th scope="col" class="text-end">Total</th>
+                            <th scope="col" class="text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for f in facturas %}
+                        <tr>
+                            <td class="fw-semibold">
+                                <i class="bi bi-receipt icono-celda me-2"></i>{{ f.numero }}
+                            </td>
+                            <td>{{ f.cliente }}</td>
+                            <td class="text-center text-muted small">{{ f.fecha }}</td>
+                            <td class="text-end fw-semibold">$ {{ '%.2f' | format(f.total) }}</td>
+                            <td class="text-center">
+                                {# Condicion: color segun el estado de la factura #}
+                                {% if f.estado == 'Pagada' %}
+                                    <span class="badge bg-success">{{ f.estado }}</span>
+                                {% elif f.estado == 'Pendiente' %}
+                                    <span class="badge bg-warning text-dark">{{ f.estado }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">{{ f.estado }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="fw-bold">
+                            <td colspan="3" class="text-end">Total facturado (sin anuladas):</td>
+                            <td class="text-end" style="color: var(--verde);">$ {{ '%.2f' | format(total_facturado) }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+            <div>No se han emitido facturas todavía.</div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
