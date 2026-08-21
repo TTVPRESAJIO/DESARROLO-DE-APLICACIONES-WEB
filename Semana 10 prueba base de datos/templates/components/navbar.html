@@ -31,6 +31,14 @@
           <a class="nav-link {% if request.endpoint == 'facturacion' %}active{% endif %}"
              href="{{ url_for('facturacion') }}">Facturacion</a>
         </li>
+
+        {# Enlaces a las secciones internas: solo tienen sentido en el inicio #}
+        {% if request.endpoint == 'index' %}
+        <li class="nav-item"><a class="nav-link" href="#quienes-somos">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#solicitudes">Solicitudes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
