@@ -1,0 +1,15 @@
+{# Insignia de estado (pagada/pendiente/anulada, activo/inactivo) #}
+{% macro badge_estado(estado) %}
+  {% if estado in ['Activo', 'Pagada', 'Aprobada'] %}
+    <span class="badge bg-success">{{ estado }}</span>
+  {% elif estado in ['Pendiente'] %}
+    <span class="badge bg-warning text-dark">{{ estado }}</span>
+  {% else %}
+    <span class="badge bg-danger">{{ estado }}</span>
+  {% endif %}
+{% endmacro %}
+
+{# Insignia neutra para etiquetas informativas (tipo de cliente, forma de pago) #}
+{% macro badge_info(texto) %}
+  <span class="badge bg-info text-dark">{{ texto }}</span>
+{% endmacro %}

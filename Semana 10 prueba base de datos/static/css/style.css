@@ -1,0 +1,13 @@
+:root {
+  --el-azul: #0f3d5c;
+  --el-amarillo: #f5a623;
+}
+body { background: #f4f6f9; }
+.el-navbar { background: var(--el-azul); }
+.el-navbar .nav-link.active { color: var(--el-amarillo) !important; font-weight: 600; }
+.el-hero {
+  background: linear-gradient(120deg, var(--el-azul), #12658f);
+}
+.el-footer { background: var(--el-azul); }
+.card { border: none; border-radius: 12px; }
+.card:hover { transform: translateY(-3px); transition: .2s; }

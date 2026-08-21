@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Electric Life - Inicio{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 rounded-3 el-hero text-white">
+  <div class="container-fluid py-3">
+    <h1 class="display-6 fw-bold">Bienvenido a {{ empresa }}</h1>
+    <p class="col-md-9 fs-5">
+      Soluciones integrales de respaldo energetico con paneles solares para
+      hogares y pequenos negocios de Puyo. Diagnostico, instalacion y mantenimiento.
+    </p>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <i class="bi bi-box-seam fs-1 text-warning"></i>
+        <h3 class="mt-2">{{ total_productos }}</h3>
+        <p class="text-muted mb-0">Productos en catalogo</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <i class="bi bi-people fs-1 text-success"></i>
+        <h3 class="mt-2">{{ total_clientes }}</h3>
+        <p class="text-muted mb-0">Clientes registrados</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <i class="bi bi-truck fs-1 text-primary"></i>
+        <h3 class="mt-2">{{ total_proveedores }}</h3>
+        <p class="text-muted mb-0">Proveedores aliados</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
