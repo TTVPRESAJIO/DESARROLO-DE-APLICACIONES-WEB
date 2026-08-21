@@ -1,0 +1,51 @@
+{# ===================================================================
+   panel_ihc.html · Componentes flotantes de accesibilidad y atajos
+   Se incluyen una sola vez desde base.html, al final del documento.
+=================================================================== #}
+
+{# -------------------------------------------------------------------
+   Panel de preferencias de accesibilidad (borde izquierdo).
+   [N7] Flexibilidad y eficiencia: la persona adapta la interfaz a su
+        capacidad visual en lugar de adaptarse ella a la interfaz.
+   WCAG 1.4.4 (cambio de tamano del texto) y 1.4.3 (contraste minimo).
+   La preferencia se recuerda entre visitas (localStorage).
+------------------------------------------------------------------- #}
+<div class="ihc-a11y" role="group" aria-label="Preferencias de accesibilidad">
+    <button type="button" id="ihc-btn-texto" aria-pressed="false"
+            title="Aumentar el tamano del texto">
+        <span aria-hidden="true">A+</span>
+        <span class="screen-reader-text">Aumentar el tamano del texto</span>
+    </button>
+    <button type="button" id="ihc-btn-contraste" aria-pressed="false"
+            title="Activar alto contraste">
+        <i class="bi bi-circle-half" aria-hidden="true"></i>
+        <span class="screen-reader-text">Activar alto contraste</span>
+    </button>
+</div>
+
+{# -------------------------------------------------------------------
+   Atajo de WhatsApp.
+   [N2] Correspondencia con el mundo real: en Ecuador WhatsApp es el
+        canal habitual para hablar con un negocio.
+   [N7] Es un atajo: quien tiene una duda rapida no quiere rellenar un
+        formulario y esperar 24 horas.
+   Es un enlace real, con area tactil de 44 px y aviso de que se abre
+   en otra ventana. WCAG 2.5.5 y 2.4.4.
+------------------------------------------------------------------- #}
+<a href="https://wa.me/593997327168?text=Hola%2C%20escribo%20desde%20la%20p%C3%A1gina%20web%20de%20Electric%20Life.%20Quisiera%20hacer%20una%20consulta%20sobre%20sus%20sistemas%20solares."
+   class="ihc-whatsapp" id="ihc-whatsapp" target="_blank" rel="noopener"
+   title="Escribenos por WhatsApp">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+    <span class="screen-reader-text">Escribenos por WhatsApp (se abre en una ventana nueva)</span>
+</a>
+
+{# -------------------------------------------------------------------
+   Volver arriba.
+   [N3] Control y libertad del usuario: siempre existe una salida clara
+   sin obligar a un desplazamiento manual largo.
+------------------------------------------------------------------- #}
+<button type="button" class="ihc-top" id="ihc-top"
+        title="Volver al inicio de la pagina">
+    <i class="bi bi-arrow-up" aria-hidden="true"></i>
+    <span class="screen-reader-text">Volver al inicio de la pagina</span>
+</button>

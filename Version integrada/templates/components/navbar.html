@@ -1,0 +1,63 @@
+{# ===================================================================
+   navbar.html · Componente reutilizable
+   [N4] Consistencia y estandares: identica en todas las paginas.
+   [N6] Reconocer antes que recordar: el menu siempre esta a la vista.
+   [N1] El enlace de la seccion actual se resalta en amarillo.
+=================================================================== #}
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top" id="navbar-main"
+     aria-label="Navegacion principal">
+    <div class="container">
+
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <i class="bi bi-lightning-charge-fill me-1" aria-hidden="true"></i>Electric Life
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false"
+                aria-label="Abrir o cerrar el menu de navegacion">
+            <span class="navbar-toggler-icon" aria-hidden="true"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+                       href="{{ url_for('index') }}"
+                       {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Inicio</a>
+                </li>
+
+                {# Enlaces a las secciones internas: solo en la portada #}
+                {% if request.endpoint == 'index' %}
+                <li class="nav-item"><a class="nav-link" href="#quienes-somos">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#solicitudes">Solicitudes</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'productos' %}active{% endif %}"
+                       href="{{ url_for('productos') }}"
+                       {% if request.endpoint == 'productos' %}aria-current="page"{% endif %}>Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'clientes' %}active{% endif %}"
+                       href="{{ url_for('clientes') }}"
+                       {% if request.endpoint == 'clientes' %}aria-current="page"{% endif %}>Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'proveedores' %}active{% endif %}"
+                       href="{{ url_for('proveedores') }}"
+                       {% if request.endpoint == 'proveedores' %}aria-current="page"{% endif %}>Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'facturacion' %}active{% endif %}"
+                       href="{{ url_for('facturacion') }}"
+                       {% if request.endpoint == 'facturacion' %}aria-current="page"{% endif %}>Facturacion</a>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</nav>

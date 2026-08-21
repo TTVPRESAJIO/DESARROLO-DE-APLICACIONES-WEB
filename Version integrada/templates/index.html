@@ -1,0 +1,766 @@
+{# ===================================================================
+   index.html · Portada de Electric Life (version integrada)
+   Jerarquia de encabezados: un unico <h1> (el hero) y un <h2> por
+   seccion, para que un lector de pantalla construya el indice.
+   WCAG 1.3.1 Informacion y relaciones; 2.4.6 Encabezados y etiquetas.
+=================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Electric Life · Sistemas solares de respaldo en Puyo{% endblock %}
+
+{# La portada usa secciones a todo el ancho #}
+{% block main_class %}{% endblock %}
+
+{% set err_sol  = errores.get('solicitud', {}) %}
+{% set prev_sol = previos.get('solicitud', {}) %}
+{% set err_con  = errores.get('contacto', {}) %}
+{% set prev_con = previos.get('contacto', {}) %}
+
+{% block hero %}
+<!-- =====================================================================
+     HERO
+     [N2] Se dice que hace la empresa en una frase, con el vocabulario
+          del cliente. La frase describe el beneficio, no el producto.
+     [N8] Jerarquia visual: el boton amarillo es la accion principal y
+          el de contorno la secundaria; no compiten entre si.
+     ===================================================================== -->
+<header>
+    <div class="hero-section" id="inicio-hero">
+        <div class="container">
+            <p class="hero-kicker">ENERG&Iacute;A LIMPIA &middot; ECUADOR</p>
+            <h1>Electric <span>Life</span></h1>
+            <p class="lead">
+                Soluciones solares de respaldo para hogares y pequenos negocios.
+                Sin ruido, sin contaminacion.
+            </p>
+            <div class="hero-btns d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#servicios" class="btn btn-solar">
+                    Ver servicios <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                </a>
+                <a href="#contacto" class="btn btn-outline-solar">Contactanos</a>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<!-- =====================================================================
+     SECCION INICIO
+     [N8] Diseno estetico y minimalista: solo la informacion esencial.
+     Las cifras salen de la base de datos, no estan escritas a mano.
+     ===================================================================== -->
+<section id="inicio" class="bg-white" aria-labelledby="titulo-inicio">
+    <div class="container">
+
+        <div class="text-center mb-4">
+            <h2 class="section-title" id="titulo-inicio">Bienvenido a {{ empresa }}</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+            <p class="text-muted col-lg-8 mx-auto">
+                Un emprendimiento enfocado en brindar soluciones energeticas innovadoras mediante
+                sistemas solares de respaldo. Mantenemos operativos tus servicios esenciales durante
+                cortes de luz con tecnologias limpias y silenciosas.
+            </p>
+        </div>
+
+        <ul class="row g-4 mt-2 list-unstyled" aria-label="Cifras de Electric Life">
+            <li class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_productos }}</div>
+                    <div class="stat-label">Productos en catalogo</div>
+                </div>
+            </li>
+            <li class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_clientes }}</div>
+                    <div class="stat-label">Clientes registrados</div>
+                </div>
+            </li>
+            <li class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_proveedores }}</div>
+                    <div class="stat-label">Proveedores aliados</div>
+                </div>
+            </li>
+            <li class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Emisiones de CO<sub>2</sub></div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</section>
+
+<!-- =====================================================================
+     SECCION QUIENES SOMOS
+     [N6] Cada atributo va acompanado de un icono que refuerza el texto.
+          Ningun icono aporta informacion por si solo: todos llevan texto.
+     ===================================================================== -->
+<section id="quienes-somos" aria-labelledby="titulo-quienes">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title" id="titulo-quienes">Quienes Somos</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+        </div>
+
+        <article>
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-5">
+                    <div class="about-img-wrapper bg-white p-3">
+                        <img src="{{ url_for('static', filename='img/logo-electric-life.svg') }}"
+                             alt="Logotipo de Electric Life: un sol sobre un panel solar, simbolo de energia renovable."
+                             class="img-fluid w-100" width="400" height="400" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <p class="mb-4 text-muted">
+                        Electric Life nace como respuesta a los frecuentes cortes de energia que afectan a hogares
+                        y pequenos negocios en Ecuador. Nos especializamos en la venta, instalacion y mantenimiento
+                        de sistemas solares de respaldo para equipos criticos: routers, iluminacion LED, camaras de
+                        seguridad y dispositivos de bajo consumo.
+                    </p>
+
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-sun-fill" aria-hidden="true"></i></div>
+                        <div>
+                            <strong>Energia limpia</strong>
+                            <p class="mb-0 text-muted small">Sin ruido, sin emisiones, sin combustible fosil.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-people-fill" aria-hidden="true"></i></div>
+                        <div>
+                            <strong>Asesoria personalizada</strong>
+                            <p class="mb-0 text-muted small">Soluciones adaptadas al presupuesto de cada cliente.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-tools" aria-hidden="true"></i></div>
+                        <div>
+                            <strong>Servicio tecnico confiable</strong>
+                            <p class="mb-0 text-muted small">Instalacion profesional y mantenimiento garantizado.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-tree-fill" aria-hidden="true"></i></div>
+                        <div>
+                            <strong>Futuro sostenible</strong>
+                            <p class="mb-0 text-muted small">Contribuimos al desarrollo verde de Ecuador.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<!-- =====================================================================
+     SECCION SERVICIOS
+     [N1] Un spinner informa mientras se cargan; el fin de la carga se
+          anuncia en la region viva (WCAG 4.1.3).
+     [N7] La misma informacion en dos formatos: tarjetas para explorar y
+          tabla para comparar, a eleccion de la persona.
+     ===================================================================== -->
+<section id="servicios" class="bg-white" aria-labelledby="titulo-servicios">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title" id="titulo-servicios">Servicios y Productos</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+            <p class="text-muted col-lg-7 mx-auto">
+                Todo lo que necesitas para proteger tu hogar o negocio de los cortes de energia.
+            </p>
+        </div>
+
+        <!-- Estado: cargando -->
+        <div id="servicios-cargando" class="text-center py-5">
+            <div class="spinner-border" role="status" aria-hidden="true"></div>
+            <p class="mt-3 mb-0 fw-semibold">Cargando servicios, un momento por favor...</p>
+        </div>
+
+        <!-- Estado: con datos -->
+        <div id="servicios-contenido" hidden>
+
+            <!-- Selector de vista. [N7] Flexibilidad y eficiencia de uso. -->
+            <div class="d-flex justify-content-center gap-2 mb-4" role="group"
+                 aria-label="Elegir como ver los servicios">
+                <button type="button" class="btn btn-detalle btn-sm" id="ver-tarjetas" aria-pressed="true">
+                    <i class="bi bi-grid-3x3-gap-fill me-1" aria-hidden="true"></i>Tarjetas
+                </button>
+                <button type="button" class="btn btn-detalle btn-sm" id="ver-tabla" aria-pressed="false">
+                    <i class="bi bi-table me-1" aria-hidden="true"></i>Tabla comparativa
+                </button>
+            </div>
+
+            <!-- Vista de tarjetas (generada por JavaScript desde el catalogo) -->
+            <div class="row g-4" id="lista-servicios"></div>
+
+            <!-- Vista de tabla -->
+            <div class="tabla-servicios-wrapper mt-5" id="bloque-tabla" hidden>
+                <table class="table tabla-servicios mb-0 align-middle">
+                    <caption class="screen-reader-text">
+                        Comparativa de los servicios de Electric Life: icono, nombre,
+                        descripcion y acceso al detalle.
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">Icono</th>
+                            <th scope="col">Servicio</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col" class="text-center">Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-servicios-body"></tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Estado: sin datos. [N9] Mensaje util, no un error tecnico. -->
+        <div id="servicios-vacio" class="text-center text-muted py-5" hidden>
+            <i class="bi bi-inbox" style="font-size: 2.5rem;" aria-hidden="true"></i>
+            <p class="mt-3 mb-0">Por ahora no hay servicios publicados. Vuelve pronto.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- =====================================================================
+     SECCION SOLICITUDES
+     Formulario funcional: guarda en la base de datos electric_life.
+     [N5] Prevencion de errores: obligatorios marcados, limites visibles
+          y ejemplos dentro de los campos.
+     [N9] Si algo falla se explica que corregir y no se pierde lo escrito.
+     ===================================================================== -->
+<section id="solicitudes" aria-labelledby="titulo-solicitudes">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title" id="titulo-solicitudes">Registrar Solicitud</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+            <p class="text-muted col-lg-7 mx-auto">
+                Cuentanos que necesitas y te contactamos. Toma menos de un minuto.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- ---------- Formulario ---------- -->
+            <div class="col-lg-7">
+                <div class="solicitud-form-card">
+
+                    <h3 class="h5 fw-bold mb-3" style="color: var(--verde-oscuro);">
+                        <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Nueva solicitud
+                    </h3>
+
+                    {# Aviso de exito tras guardar. [N1] El sistema confirma la accion. #}
+                    {% with mensajes = get_flashed_messages(category_filter=['solicitud']) %}
+                        {% if mensajes %}
+                        <div class="ihc-aviso ihc-aviso-exito" role="status" tabindex="-1" id="aviso-solicitud">
+                            <i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>{{ mensajes[0] }}
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    {# Aviso de error de la validacion del servidor. [N9] #}
+                    {% if aviso is defined and aviso and aviso[1] == 'solicitud' %}
+                    <div class="ihc-aviso ihc-aviso-error" role="alert" tabindex="-1" id="aviso-solicitud">
+                        <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>{{ aviso[2] }}
+                    </div>
+                    {% endif %}
+
+                    <p class="ihc-ayuda mb-4">
+                        Los campos marcados con <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                        son obligatorios.
+                    </p>
+
+                    <form id="form-solicitud" method="post" action="{{ url_for('index') }}#solicitudes" novalidate>
+
+                        <input type="hidden" name="formulario" value="solicitud">
+
+                        {# Campo trampa: invisible para las personas, atractivo para los
+                           robots. Sustituye al captcha, que es una barrera de
+                           accesibilidad reconocida por las WCAG. [N5] #}
+                        <p class="ihc-trampa">
+                            <label for="web_url">No completes este campo</label>
+                            <input type="text" name="web_url" id="web_url" tabindex="-1" autocomplete="off" value="">
+                        </p>
+
+                        <div class="mb-3">
+                            <label for="sol-nombre" class="form-label fw-semibold">
+                                Nombre completo <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" class="form-control{% if err_sol.nombre %} is-invalid{% endif %}"
+                                   id="sol-nombre" name="sol_nombre" required
+                                   minlength="3" maxlength="80" autocomplete="name"
+                                   placeholder="Ej.: Maria Cordova"
+                                   value="{{ prev_sol.get('sol_nombre', '') }}"
+                                   aria-describedby="sol-nombre-ayuda"
+                                   {% if err_sol.nombre %}aria-invalid="true" aria-describedby="sol-nombre-error"{% endif %}>
+                            <span class="ihc-ayuda" id="sol-nombre-ayuda">Entre 3 y 80 caracteres.</span>
+                            {% if err_sol.nombre %}
+                            <span class="invalid-feedback d-block" id="sol-nombre-error">
+                                <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_sol.nombre }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sol-categoria" class="form-label fw-semibold">
+                                Tipo de servicio <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                            </label>
+                            <select class="form-select{% if err_sol.categoria %} is-invalid{% endif %}"
+                                    id="sol-categoria" name="sol_categoria" required
+                                    aria-describedby="sol-categoria-ayuda"
+                                    {% if err_sol.categoria %}aria-invalid="true" aria-describedby="sol-categoria-error"{% endif %}>
+                                <option value="">Selecciona una opcion...</option>
+                                {% for clave, etiqueta in categorias.items() %}
+                                <option value="{{ clave }}"
+                                    {% if prev_sol.get('sol_categoria') == clave %}selected{% endif %}>{{ etiqueta }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="ihc-ayuda" id="sol-categoria-ayuda">
+                                Si no estas seguro, elige "Asesoria y cotizacion".
+                            </span>
+                            {% if err_sol.categoria %}
+                            <span class="invalid-feedback d-block" id="sol-categoria-error">
+                                <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_sol.categoria }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="sol-descripcion" class="form-label fw-semibold">
+                                Describe tu necesidad <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                            </label>
+                            <textarea class="form-control{% if err_sol.descripcion %} is-invalid{% endif %}"
+                                      id="sol-descripcion" name="sol_descripcion" rows="4" required
+                                      minlength="10" maxlength="500"
+                                      placeholder="Ej.: Necesito mantener el router y dos focos encendidos durante los apagones."
+                                      aria-describedby="sol-descripcion-ayuda sol-descripcion-contador"
+                                      data-contador="sol-descripcion-contador"
+                                      {% if err_sol.descripcion %}aria-invalid="true"{% endif %}>{{ prev_sol.get('sol_descripcion', '') }}</textarea>
+                            <span class="ihc-ayuda" id="sol-descripcion-ayuda">
+                                Entre 10 y 500 caracteres. Mientras mas detalle, mejor podemos cotizar.
+                            </span>
+                            <span class="ihc-contador-caracteres" id="sol-descripcion-contador" aria-live="polite"></span>
+                            {% if err_sol.descripcion %}
+                            <span class="invalid-feedback d-block" id="sol-descripcion-error">
+                                <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_sol.descripcion }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" id="btn-registrar" class="btn btn-verde flex-grow-1">
+                                <i class="bi bi-send-fill me-1" aria-hidden="true"></i>Registrar solicitud
+                            </button>
+                            {# [N3] Una salida clara para quien se arrepiente a mitad
+                               del formulario, sin borrar campo por campo. #}
+                            <button type="button" id="btn-limpiar-solicitud" class="btn btn-detalle">
+                                <i class="bi bi-eraser me-1" aria-hidden="true"></i>Limpiar
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- ---------- Registros guardados en la base de datos ---------- -->
+            <div class="col-lg-5">
+                <div class="contact-card">
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h3 class="h5 fw-bold mb-0" style="color: var(--verde-oscuro);">
+                            <i class="bi bi-list-check me-2" aria-hidden="true"></i>Solicitudes recibidas
+                        </h3>
+                        <div class="contador-badge" id="contador-registros">{{ total_solicitudes }}</div>
+                    </div>
+
+                    {% if solicitudes %}
+                    <ul class="row g-3 list-unstyled" id="lista-registros">
+                        {% for s in solicitudes %}
+                        <li class="col-12">
+                            <div class="card registro-card border-0 shadow-sm p-3">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="registro-icon" style="background: var(--verde); color: #fff;">
+                                        <i class="bi bi-person-fill" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <strong class="d-block">{{ s.nombre }}</strong>
+                                        <span class="badge rounded-pill"
+                                              style="background: var(--amarillo); color: var(--oscuro);">
+                                            {{ categorias.get(s.categoria, s.categoria) }}
+                                        </span>
+                                        <p class="mb-0 mt-2 text-muted small">
+                                            {{ s.descripcion[:110] }}{% if s.descripcion|length > 110 %}...{% endif %}
+                                        </p>
+                                        <time class="text-muted" style="font-size: 0.75rem;"
+                                              datetime="{{ s.fecha.isoformat() if s.fecha else '' }}">
+                                            <i class="bi bi-clock me-1" aria-hidden="true"></i>
+                                            {{ s.fecha.strftime('%d/%m/%Y %H:%M') if s.fecha else '' }}
+                                        </time>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div id="mensaje-vacio" class="text-center py-5">
+                        <i class="bi bi-clipboard" style="font-size: 2.5rem;" aria-hidden="true"></i>
+                        <p class="mt-3 mb-0">Todavia no hay solicitudes. Se la primera persona en registrar una.</p>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     SECCION CONTACTO
+     [N2] Telefono, correo, direccion y horario en el formato que la
+          gente usa a diario.
+     [N10] Se indica el plazo de respuesta: el usuario sabe que esperar.
+     ===================================================================== -->
+<section id="contacto" aria-labelledby="titulo-contacto">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="section-title" id="titulo-contacto">Contacto</h2>
+            <div class="section-divider" aria-hidden="true"></div>
+            <p class="text-muted">Tienes preguntas? Escribenos o llamanos, con gusto te asesoramos.</p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- ---------- Informacion + video ---------- -->
+            <div class="col-lg-5">
+                <aside aria-label="Datos de contacto de Electric Life">
+                    <div class="contact-card mb-4">
+
+                        <h3 class="h5 fw-bold mb-3" style="color: var(--verde-oscuro);">
+                            <i class="bi bi-info-circle-fill me-2" aria-hidden="true"></i>Informacion
+                        </h3>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="bi bi-envelope-fill" aria-hidden="true"></i></div>
+                            <div>
+                                <small class="text-muted d-block">Correo</small>
+                                <a href="mailto:fernandoquilligana@outlook.com" class="contact-link">
+                                    fernandoquilligana@outlook.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="bi bi-telephone-fill" aria-hidden="true"></i></div>
+                            <div>
+                                <small class="text-muted d-block">Telefono</small>
+                                <a href="tel:+593997327168" class="contact-link">0997 327 168</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>
+                            <div>
+                                <small class="text-muted d-block">Direccion</small>
+                                <span class="fw-semibold">Av. Alberto Zambrano y Ceslao Marin<br>Barrio La Merced, Puyo, Pastaza</span>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="bi bi-clock-fill" aria-hidden="true"></i></div>
+                            <div>
+                                <small class="text-muted d-block">Horario de atencion</small>
+                                <span>Lunes a viernes, de 08:00 a 18:00</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 pt-2">
+                            <h4 class="fw-bold mb-2 h6" style="color: var(--oscuro);">Redes sociales</h4>
+                            <ul class="d-flex gap-2 list-unstyled mb-0">
+                                <li>
+                                    <a href="https://facebook.com/electriclifeec" target="_blank" rel="noopener" class="social-btn social-fb">
+                                        <i class="bi bi-facebook" aria-hidden="true"></i>
+                                        <span class="screen-reader-text">Facebook de Electric Life (se abre en una pestana nueva)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://instagram.com/electriclife.ec" target="_blank" rel="noopener" class="social-btn social-ig">
+                                        <i class="bi bi-instagram" aria-hidden="true"></i>
+                                        <span class="screen-reader-text">Instagram de Electric Life (se abre en una pestana nueva)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://linkedin.com/company/electriclifeec" target="_blank" rel="noopener" class="social-btn social-li">
+                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
+                                        <span class="screen-reader-text">LinkedIn de Electric Life (se abre en una pestana nueva)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="mailto:fernandoquilligana@outlook.com" class="social-btn social-mail">
+                                        <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+                                        <span class="screen-reader-text">Escribir un correo a Electric Life</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="aside-card mt-4">
+                            <span class="promo-badge">
+                                <i class="bi bi-star-fill me-1" aria-hidden="true"></i>Lanzamiento
+                            </span>
+                            <h4 class="mt-1 h5">Diagnostico gratuito</h4>
+                            <p class="text-muted small mb-0">
+                                Para los primeros 20 clientes: diagnostico energetico sin costo.
+                            </p>
+                        </div>
+
+                    </div>
+                </aside>
+
+                {# -------------------------------------------------------
+                   VIDEO CON CARGA BAJO CONSENTIMIENTO
+                   El iframe de YouTube no se imprime en el HTML: se crea
+                   solo cuando la persona lo pide de forma explicita.
+                   [N3] El usuario decide si comparte sus datos con un
+                        tercero, sabiendo antes lo que implica.
+                   Es lo contrario de un patron oscuro: la consecuencia se
+                   enuncia en el propio boton.
+                ------------------------------------------------------- #}
+                <div class="ihc-video" id="ihc-video"
+                     data-video="https://www.youtube.com/embed/DA4A7odAU5Y"
+                     data-consentido="0">
+                    <div class="ihc-video-aviso">
+                        <i class="bi bi-play-btn-fill ihc-video-icono" aria-hidden="true"></i>
+                        <h4 class="h6 mb-2">Video informativo de Electric Life</h4>
+                        <p class="mb-3">
+                            Este video esta alojado en <strong>YouTube</strong>. Al cargarlo,
+                            YouTube podra instalar cookies en tu navegador y conocer tu direccion IP.
+                        </p>
+                        <button type="button" class="btn btn-verde btn-sm" id="ihc-video-cargar">
+                            <i class="bi bi-play-fill me-1" aria-hidden="true"></i>Cargar y ver el video
+                        </button>
+                        <p class="ihc-video-nota mt-3 mb-0">
+                            Si prefieres no cargarlo, el contenido completo esta disponible en texto justo debajo.
+                        </p>
+                    </div>
+                </div>
+
+                {# Alternativa textual del video. WCAG 1.2.1 #}
+                <details class="ihc-transcripcion mt-3">
+                    <summary>
+                        <i class="bi bi-file-text me-1" aria-hidden="true"></i>
+                        Transcripcion: ver el contenido del video en texto
+                    </summary>
+                    <div class="ihc-transcripcion-cuerpo">
+                        <p class="mb-2">
+                            El video presenta a Electric Life y sus sistemas solares de respaldo
+                            para hogares y pequenos negocios en Ecuador. Recorre los mismos temas
+                            que puedes leer en este sitio:
+                        </p>
+                        <ul class="mb-2">
+                            <li>Que es un sistema solar de respaldo y en que se diferencia de un generador.</li>
+                            <li>Que equipos se pueden mantener encendidos durante un apagon: router,
+                                iluminacion LED, camaras de seguridad y dispositivos de bajo consumo.</li>
+                            <li>Como es el proceso de instalacion y que incluye el servicio.</li>
+                        </ul>
+                        <p class="mb-0">
+                            Toda esta informacion esta desarrollada en texto en las secciones
+                            <a href="#quienes-somos" class="contact-link">Quienes Somos</a> y
+                            <a href="#servicios" class="contact-link">Servicios y Productos</a>
+                            de esta misma pagina.
+                        </p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- ---------- Formulario de contacto ---------- -->
+            <div class="col-lg-7">
+                <div class="contact-card ihc-card-auto">
+
+                    <h3 class="h5 fw-bold mb-4" style="color: var(--verde-oscuro);">
+                        <i class="bi bi-send-fill me-2" aria-hidden="true"></i>Envianos un mensaje
+                    </h3>
+
+                    {% with mensajes = get_flashed_messages(category_filter=['contacto']) %}
+                        {% if mensajes %}
+                        <div class="ihc-aviso ihc-aviso-exito" role="status" tabindex="-1" id="aviso-contacto">
+                            <i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>{{ mensajes[0] }}
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    {% if aviso is defined and aviso and aviso[1] == 'contacto' %}
+                    <div class="ihc-aviso ihc-aviso-error" role="alert" tabindex="-1" id="aviso-contacto">
+                        <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>{{ aviso[2] }}
+                    </div>
+                    {% endif %}
+
+                    <p class="ihc-ayuda mb-4">
+                        Los campos marcados con <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                        son obligatorios. Respondemos en un plazo de 24 a 48 horas laborables.
+                    </p>
+
+                    <form id="form-contacto" method="post" action="{{ url_for('index') }}#contacto" novalidate>
+
+                        <input type="hidden" name="formulario" value="contacto">
+                        <p class="ihc-trampa">
+                            <label for="web_url_c">No completes este campo</label>
+                            <input type="text" name="web_url" id="web_url_c" tabindex="-1" autocomplete="off" value="">
+                        </p>
+
+                        <div class="row g-3">
+
+                            <div class="col-sm-6">
+                                <label for="con-nombre" class="form-label fw-semibold">
+                                    Nombre completo <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white" aria-hidden="true">
+                                        <i class="bi bi-person-fill"></i>
+                                    </span>
+                                    <input type="text" class="form-control{% if err_con.nombre %} is-invalid{% endif %}"
+                                           id="con-nombre" name="con_nombre" required minlength="3"
+                                           autocomplete="name" placeholder="Ej.: Maria Cordova"
+                                           value="{{ prev_con.get('con_nombre', '') }}">
+                                </div>
+                                {% if err_con.nombre %}
+                                <span class="invalid-feedback d-block">
+                                    <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_con.nombre }}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="con-correo" class="form-label fw-semibold">
+                                    Correo electronico <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white" aria-hidden="true">
+                                        <i class="bi bi-envelope-fill"></i>
+                                    </span>
+                                    <input type="email" class="form-control{% if err_con.correo %} is-invalid{% endif %}"
+                                           id="con-correo" name="con_correo" required
+                                           autocomplete="email" placeholder="nombre@correo.com"
+                                           value="{{ prev_con.get('con_correo', '') }}"
+                                           aria-describedby="con-correo-ayuda">
+                                </div>
+                                <span class="ihc-ayuda" id="con-correo-ayuda">Aqui te enviaremos la respuesta.</span>
+                                {% if err_con.correo %}
+                                <span class="invalid-feedback d-block">
+                                    <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_con.correo }}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="con-asunto" class="form-label fw-semibold">
+                                    Motivo del mensaje <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                                </label>
+                                <select class="form-select{% if err_con.asunto %} is-invalid{% endif %}"
+                                        id="con-asunto" name="con_asunto" required>
+                                    <option value="">Selecciona una opcion...</option>
+                                    {% for clave, etiqueta in asuntos.items() %}
+                                    <option value="{{ clave }}"
+                                        {% if prev_con.get('con_asunto') == clave %}selected{% endif %}>{{ etiqueta }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% if err_con.asunto %}
+                                <span class="invalid-feedback d-block">
+                                    <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_con.asunto }}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="con-mensaje" class="form-label fw-semibold">
+                                    Mensaje <span class="ihc-obligatorio" aria-hidden="true">*</span>
+                                </label>
+                                <textarea class="form-control{% if err_con.mensaje %} is-invalid{% endif %}"
+                                          id="con-mensaje" name="con_mensaje" rows="5" required
+                                          minlength="15" maxlength="1000"
+                                          placeholder="Cuentanos en que podemos ayudarte."
+                                          aria-describedby="con-mensaje-ayuda con-mensaje-contador"
+                                          data-contador="con-mensaje-contador">{{ prev_con.get('con_mensaje', '') }}</textarea>
+                                <span class="ihc-ayuda" id="con-mensaje-ayuda">Entre 15 y 1000 caracteres.</span>
+                                <span class="ihc-contador-caracteres" id="con-mensaje-contador" aria-live="polite"></span>
+                                {% if err_con.mensaje %}
+                                <span class="invalid-feedback d-block">
+                                    <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ err_con.mensaje }}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-verde w-100">
+                                    <i class="bi bi-send-fill me-1" aria-hidden="true"></i>Enviar mensaje
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+
+                {# -------------------------------------------------------
+                   MAPA CON CARGA BAJO CONSENTIMIENTO (mismo patron)
+                   Mientras tanto se muestra la direccion escrita, que es
+                   lo que de verdad necesita quien quiere llegar. [N2]
+                ------------------------------------------------------- #}
+                <div class="contact-card ihc-card-auto mt-4">
+                    <h3 class="h5 fw-bold mb-3" style="color: var(--verde-oscuro);">
+                        <i class="bi bi-geo-alt-fill me-2" aria-hidden="true"></i>Donde estamos
+                    </h3>
+
+                    <p class="text-muted small mb-3">
+                        Av. Alberto Zambrano y Ceslao Marin, Barrio La Merced, Puyo, Pastaza.
+                        Atendemos de lunes a viernes, de 08:00 a 18:00.
+                    </p>
+
+                    <div class="ihc-mapa" id="ihc-mapa"
+                         data-mapa="https://www.google.com/maps?q=Barrio%20La%20Merced%2C%20Puyo%2C%20Pastaza%2C%20Ecuador&output=embed"
+                         data-consentido="0">
+                        <div class="ihc-mapa-aviso">
+                            <i class="bi bi-map-fill ihc-mapa-icono" aria-hidden="true"></i>
+                            <h4 class="h6 mb-2">Mapa de ubicacion</h4>
+                            <p class="mb-3">
+                                El mapa lo proporciona <strong>Google Maps</strong>. Al cargarlo,
+                                Google podra instalar cookies y conocer tu direccion IP.
+                            </p>
+                            <button type="button" class="btn btn-verde btn-sm" id="ihc-mapa-cargar">
+                                <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>Cargar el mapa
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="mt-3 mb-0 text-center">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Barrio%20La%20Merced%2C%20Puyo%2C%20Pastaza%2C%20Ecuador"
+                           class="contact-link" target="_blank" rel="noopener">
+                            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>
+                            Abrir en Google Maps
+                            <span class="screen-reader-text">(se abre en una pestana nueva)</span>
+                        </a>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

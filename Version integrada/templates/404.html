@@ -1,0 +1,59 @@
+{# ===================================================================
+   404.html · Pagina no encontrada
+   [N9] Ayudar a reconocer, diagnosticar y recuperarse de errores:
+        el mensaje se expresa en lenguaje llano, explica el problema y
+        ofrece salidas, en lugar de dejar al usuario sin rumbo.
+=================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}No encontramos esa pagina · Electric Life{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+
+    <i class="bi bi-compass" style="font-size: 4rem; color: var(--verde);" aria-hidden="true"></i>
+
+    <h1 class="section-title mt-3">No encontramos esa pagina</h1>
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <p class="text-muted col-lg-6 mx-auto">
+        La direccion que escribiste no existe o el enlace que seguiste
+        puede estar desactualizado. No es culpa tuya: aqui abajo tienes
+        las secciones principales del sitio.
+    </p>
+
+    <ul class="row g-3 list-unstyled col-lg-9 mx-auto mt-3">
+        <li class="col-sm-6 col-lg-3">
+            <a href="{{ url_for('index') }}" class="card service-card p-3 text-center text-decoration-none h-100 d-block">
+                <div class="card-icon"><i class="bi bi-house-door-fill" aria-hidden="true"></i></div>
+                <span class="card-title d-block">Inicio</span>
+            </a>
+        </li>
+        <li class="col-sm-6 col-lg-3">
+            <a href="{{ url_for('productos') }}" class="card service-card p-3 text-center text-decoration-none h-100 d-block">
+                <div class="card-icon"><i class="bi bi-box-seam-fill" aria-hidden="true"></i></div>
+                <span class="card-title d-block">Productos</span>
+            </a>
+        </li>
+        <li class="col-sm-6 col-lg-3">
+            <a href="{{ url_for('index') }}#servicios" class="card service-card p-3 text-center text-decoration-none h-100 d-block">
+                <div class="card-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></div>
+                <span class="card-title d-block">Servicios</span>
+            </a>
+        </li>
+        <li class="col-sm-6 col-lg-3">
+            <a href="{{ url_for('index') }}#contacto" class="card service-card p-3 text-center text-decoration-none h-100 d-block">
+                <div class="card-icon"><i class="bi bi-envelope-fill" aria-hidden="true"></i></div>
+                <span class="card-title d-block">Contacto</span>
+            </a>
+        </li>
+    </ul>
+
+    <p class="mt-4 mb-0">
+        <a href="{{ url_for('index') }}" class="btn btn-verde">
+            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver al inicio
+        </a>
+    </p>
+
+</div>
+{% endblock %}
