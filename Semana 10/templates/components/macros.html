@@ -1,0 +1,10 @@
+{# Macro reutilizable: pinta una insignia de estado con color segun el valor #}
+{% macro badge_estado(estado) %}
+  {% if estado in ['Activo', 'Pagada'] %}
+    <span class="badge bg-success">{{ estado }}</span>
+  {% elif estado in ['Pendiente'] %}
+    <span class="badge bg-warning text-dark">{{ estado }}</span>
+  {% else %}
+    <span class="badge bg-danger">{{ estado }}</span>
+  {% endif %}
+{% endmacro %}
