@@ -1,0 +1,52 @@
+{# ===================================================================
+   formulario_cliente.html · sirve para registrar y para editar
+=================================================================== #}
+{% extends "base.html" %}
+{% from "components/campos.html" import campo, encabezado_formulario %}
+
+{% block title %}Electric Life - {{ titulo }}{% endblock %}
+
+{% block content %}
+
+{{ encabezado_formulario(modo, 'cliente', 'bi-people', url_for('clientes'), form) }}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+
+        <form method="post" action="{{ accion }}" novalidate>
+
+            {{ form.hidden_tag() }}
+
+            <div class="row g-3">
+
+                {{ campo(form.nombre, 'Persona natural o razon social del negocio.') }}
+
+                {{ campo(form.cedula, '10 digitos para cedula, 13 para RUC.', 'col-md-6') }}
+
+                {{ campo(form.telefono, 'Numero al que se le puede llamar.', 'col-md-6') }}
+
+                {{ campo(form.correo, 'Aqui se enviaran las cotizaciones.', 'col-md-6') }}
+
+                {{ campo(form.ciudad, '', 'col-md-6') }}
+
+                {{ campo(form.estado, 'Un cliente inactivo deja de aparecer en las campanas.', 'col-md-6') }}
+
+                <div class="col-12 d-flex gap-2 flex-wrap mt-2">
+                    {{ form.submit(class="btn btn-success") }}
+                    <a href="{{ url_for('clientes') }}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% if registro is defined %}
+<p class="text-muted small mt-3">
+    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+    Editando el cliente n.&deg; {{ registro.id }}.
+</p>
+{% endif %}
+
+{% endblock %}

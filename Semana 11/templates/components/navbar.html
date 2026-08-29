@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark el-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='img/logo-electric-life.svg') }}"
+           alt="Electric Life" width="32" height="32">
+      <span class="fw-bold">Electric Life</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#menu" aria-controls="menu" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+             href="{{ url_for('index') }}">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'productos' %}active{% endif %}"
+             href="{{ url_for('productos') }}">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'clientes' %}active{% endif %}"
+             href="{{ url_for('clientes') }}">Clientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'proveedores' %}active{% endif %}"
+             href="{{ url_for('proveedores') }}">Proveedores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'facturacion' %}active{% endif %}"
+             href="{{ url_for('facturacion') }}">Facturacion</a>
+        </li>
+
+        {# Enlaces a las secciones internas: solo tienen sentido en el inicio #}
+        {% if request.endpoint == 'index' %}
+        <li class="nav-item"><a class="nav-link" href="#quienes-somos">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#solicitudes">Solicitudes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
