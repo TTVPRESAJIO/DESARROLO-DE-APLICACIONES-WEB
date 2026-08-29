@@ -16,9 +16,10 @@
 # ============================================================
 from datetime import date, datetime
 
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, abort, request
 
-from forms import ProductoForm, ClienteForm, ProveedorForm, FacturaForm
+from forms import (ProductoForm, ClienteForm, ProveedorForm, FacturaForm,
+                   SolicitudForm, ContactoForm)
 
 app = Flask(__name__)
 
@@ -73,6 +74,58 @@ facturas_data = [
 ]
 
 
+# ------------------------------------------------------------
+#  Solicitudes y mensajes recibidos desde la portada.
+#  Se guardan en memoria mientras la aplicacion esta en ejecucion
+#  (esta semana todavia no se usa base de datos).
+# ------------------------------------------------------------
+solicitudes_data = []
+mensajes_data = []
+
+# Etiquetas legibles de las categorias, para mostrarlas en el listado
+ETIQUETAS_CATEGORIA = {
+    "instalacion":   "Instalacion de sistema solar",
+    "internet":      "Internet sin apagones",
+    "mantenimiento": "Mantenimiento de un sistema existente",
+    "asesoria":      "Asesoria y cotizacion",
+}
+
+
+# ============================================================
+#  CATALOGO UNICO DE SERVICIOS
+#  Se envia a la plantilla y de ahi a JavaScript, que genera las
+#  tarjetas y la tabla comparativa de la portada. Al haber una
+#  sola fuente, la vista de tarjetas y la de tabla no se pueden
+#  desincronizar.
+# ============================================================
+SERVICIOS = [
+    {"icono": "bi-box-seam-fill", "titulo": "Venta de Sistemas Solares", "categoria": "instalacion",
+     "texto": "Kits completos de respaldo solar para todo tipo de consumo.",
+     "detalle": "Ofrecemos kits solares dimensionados segun tu consumo: panel, inversor, bateria de litio y accesorios. Incluye garantia y asesoria de instalacion."},
+    {"icono": "bi-hammer", "titulo": "Instalacion Profesional", "categoria": "instalacion",
+     "texto": "Montaje de paneles solares con personal tecnico certificado.",
+     "detalle": "Nuestro equipo certificado realiza el montaje, cableado y puesta en marcha del sistema, cumpliendo normas de seguridad electrica."},
+    {"icono": "bi-wifi", "titulo": "Internet sin Apagones", "categoria": "internet",
+     "texto": "Manten tu router activo durante cortes de luz con nuestros sistemas.",
+     "detalle": "Sistema de respaldo dedicado para tu router y ONT. Mantiene tu internet y teletrabajo activos hasta 8 horas durante un apagon."},
+    {"icono": "bi-lightbulb-fill", "titulo": "Iluminacion LED", "categoria": "instalacion",
+     "texto": "Soluciones de iluminacion de emergencia de bajo consumo.",
+     "detalle": "Focos y tiras LED de bajo consumo con activacion automatica ante cortes de energia. Ideales para hogar y negocio."},
+    {"icono": "bi-camera-video-fill", "titulo": "Camaras de Seguridad", "categoria": "instalacion",
+     "texto": "Respaldo energetico para tus camaras de vigilancia 24/7.",
+     "detalle": "Respaldo energetico para tu sistema de videovigilancia (DVR/NVR y camaras), garantizando monitoreo continuo dia y noche."},
+    {"icono": "bi-wrench-adjustable-circle-fill", "titulo": "Mantenimiento", "categoria": "mantenimiento",
+     "texto": "Mantenimiento preventivo y correctivo para todos nuestros sistemas.",
+     "detalle": "Planes de mantenimiento preventivo y correctivo: limpieza de paneles, revision de baterias y diagnostico de rendimiento."},
+    {"icono": "bi-graph-up-arrow", "titulo": "Optimizacion Energetica", "categoria": "asesoria",
+     "texto": "Evaluamos tu consumo y disenamos la solucion mas eficiente.",
+     "detalle": "Analizamos tu consumo electrico y proponemos la configuracion mas eficiente para reducir costos y maximizar el respaldo."},
+    {"icono": "bi-chat-dots-fill", "titulo": "Asesoria Personalizada", "categoria": "asesoria",
+     "texto": "Te guiamos para elegir el sistema ideal segun tu presupuesto.",
+     "detalle": "Asesoria gratuita para elegir el sistema ideal segun tu presupuesto y necesidades. Sin compromiso."},
+]
+
+
 # ============================================================
 #  UTILIDADES
 # ============================================================
@@ -92,9 +145,50 @@ def buscar(coleccion, id_buscado):
 # ============================================================
 #  RUTAS DE CONSULTA (las de la Semana 10, se conservan)
 # ============================================================
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
+    """Portada informativa. Tambien recibe los dos formularios publicos.
+
+    Los dos formularios conviven en la misma pagina, por eso cada uno
+    lleva un campo oculto "formulario" que indica cual se envio.
+    """
+    form_solicitud = SolicitudForm()
+    form_contacto = ContactoForm()
+    cual = request.form.get("formulario")
+
+    # --- Solicitud de servicio ---
+    if cual == "solicitud" and form_solicitud.validate_on_submit():
+        solicitudes_data.insert(0, {
+            "id": len(solicitudes_data) + 1,
+            "nombre": form_solicitud.sol_nombre.data.strip(),
+            "categoria": form_solicitud.sol_categoria.data,
+            "descripcion": form_solicitud.sol_descripcion.data.strip(),
+            "fecha": datetime.now(),
+        })
+        flash(f"Solicitud registrada correctamente. Tu numero de caso es el "
+              f"#{len(solicitudes_data)}. Te contactaremos en 24 a 48 horas.", "success")
+        return redirect(url_for("index") + "#solicitudes")
+
+    # --- Mensaje de contacto ---
+    if cual == "contacto" and form_contacto.validate_on_submit():
+        mensajes_data.append({
+            "nombre": form_contacto.con_nombre.data.strip(),
+            "correo": form_contacto.con_correo.data.strip(),
+            "asunto": form_contacto.con_asunto.data,
+            "mensaje": form_contacto.con_mensaje.data.strip(),
+            "fecha": datetime.now(),
+        })
+        flash("Mensaje enviado. Respondemos en un plazo de 24 a 48 horas laborables.",
+              "success")
+        return redirect(url_for("index") + "#contacto")
+
     return render_template("index.html", titulo="Inicio", empresa=empresa,
+                           servicios=SERVICIOS,
+                           etiquetas=ETIQUETAS_CATEGORIA,
+                           form_solicitud=form_solicitud,
+                           form_contacto=form_contacto,
+                           solicitudes=solicitudes_data[:6],
+                           total_solicitudes=len(solicitudes_data),
                            total_productos=len(productos_data),
                            total_clientes=len(clientes_data),
                            total_proveedores=len(proveedores_data))
@@ -335,6 +429,16 @@ def factura_eliminar(id):
     facturas_data.remove(factura)
     flash(f"Factura {factura['numero']} eliminada.", "warning")
     return redirect(url_for("facturacion"))
+
+
+# ------------------------------------------------------------
+#  Pagina de error amable.
+#  [N9] El mensaje se expresa en lenguaje llano, explica el
+#  problema y ofrece una salida.
+# ------------------------------------------------------------
+@app.errorhandler(404)
+def no_encontrado(e):
+    return render_template("404.html", titulo="Pagina no encontrada"), 404
 
 
 if __name__ == "__main__":
