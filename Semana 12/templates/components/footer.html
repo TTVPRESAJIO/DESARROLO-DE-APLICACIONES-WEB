@@ -1,0 +1,38 @@
+{# ===================================================================
+   footer.html · Componente reutilizable
+   [N4] Consistencia: identico en todas las paginas.
+   [N10] Ayuda y documentacion: los enlaces legales viven en el lugar
+         convencional donde la gente los busca.
+=================================================================== #}
+<footer>
+    <div class="container">
+
+        <img src="{{ url_for('static', filename='img/logo-electric-life.svg') }}"
+             alt="" width="40" height="40" class="mb-2" loading="lazy">
+
+        <p class="mb-1"><strong>Daniel Fernando Allacuri Quilligana</strong></p>
+        <p class="mb-1">
+            Desarrollo de Aplicaciones Web &middot; Bases de Datos &middot;
+            Interaccion Humano-Computador
+        </p>
+        <p class="mb-3">Universidad Estatal Amazonica &middot; Puyo, Pastaza &middot; 2026</p>
+
+        <ul class="ihc-legal list-unstyled">
+            <li><a href="#quienes-somos">Quienes somos</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li>
+                <a href="https://wa.me/593997327168" target="_blank" rel="noopener">
+                    WhatsApp
+                    <span class="screen-reader-text">(se abre en una ventana nueva)</span>
+                </a>
+            </li>
+        </ul>
+
+        <p class="mb-0 mt-3" style="opacity: 0.7; font-size: 0.8rem;">
+            <i class="bi bi-lightning-charge-fill me-1" style="color: var(--amarillo);" aria-hidden="true"></i>
+            &copy; 2026 Electric Life &middot; Sistemas solares de respaldo
+        </p>
+
+    </div>
+</footer>

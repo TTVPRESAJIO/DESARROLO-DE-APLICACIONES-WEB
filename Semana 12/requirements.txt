@@ -1,0 +1,7 @@
+Flask==3.0.3
+Flask-WTF==1.3.0
+WTForms==3.2.2
+email-validator==2.3.0
+
+# SQLite no aparece aqui porque el modulo sqlite3 forma parte de la
+# libreria estandar de Python: no hay nada que instalar.
