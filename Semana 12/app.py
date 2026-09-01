@@ -3,8 +3,8 @@
 #  Avance 12/16 - Semana 12: Persistencia de datos en un entorno local
 #
 #  Novedad de esta semana: los datos ya NO viven en listas de Python.
-#  Ahora se guardan en una base de datos SQLite local (data/ferreteria.db)
-#  y sobreviven al cierre y reinicio de la aplicacion.
+#  Ahora se guardan en una base de datos SQLite local
+#  (data/electric_life.db) y sobreviven al cierre y reinicio de la app.
 #
 #  El flujo completo es:
 #     Formulario -> Validacion (Flask-WTF) -> INSERT -> SELECT -> Jinja2

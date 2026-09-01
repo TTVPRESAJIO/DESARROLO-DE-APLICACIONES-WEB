@@ -4,6 +4,6 @@ __pycache__/
 .env
 
 # La base de datos local SI se sube al repositorio: el enunciado la
-# incluye en la estructura del proyecto (data/ferreteria.db) y sirve
-# como evidencia de que la persistencia funciona.
-!data/ferreteria.db
+# incluye en la estructura del proyecto y sirve como evidencia de que
+# la persistencia funciona.
+!data/electric_life.db

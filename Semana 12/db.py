@@ -21,10 +21,12 @@ import os
 import sqlite3
 from datetime import date, datetime
 
-# El archivo de la base vive en data/ferreteria.db, junto al proyecto.
+# El archivo de la base vive dentro de la carpeta data/, junto al proyecto.
+# El enunciado propone el nombre "ferreteria.db" porque su ejemplo es una
+# ferreteria; aqui se adapta al tema del proyecto: electric_life.db.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CARPETA_DATOS = os.path.join(BASE_DIR, "data")
-RUTA_BD = os.path.join(CARPETA_DATOS, "ferreteria.db")
+RUTA_BD = os.path.join(CARPETA_DATOS, "electric_life.db")
 
 
 # ---------------------------------------------------------------------

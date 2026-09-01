@@ -13,7 +13,7 @@ aplicación se perdía todo. Esta semana la información se guarda en una
 
 | | Semana 11 | Semana 12 |
 |---|---|---|
-| Dónde viven los datos | Listas en `app.py` | `data/ferreteria.db` |
+| Dónde viven los datos | Listas en `app.py` | `data/electric_life.db` |
 | Al reiniciar la aplicación | Todo vuelve al estado inicial | **Los registros siguen ahí** |
 | Cómo se guarda | `lista.append()` | `INSERT INTO ... VALUES (?, ?)` |
 | Cómo se lee | Recorrer la lista | `SELECT ... ` + `fetchall()` |
@@ -36,13 +36,16 @@ Nada se guarda si la validación falla: el `INSERT` está **dentro** del
 
 ---
 
-## Sobre el nombre `ferreteria.db`
+## Sobre el nombre de la base de datos
 
-El archivo se llama `ferreteria.db` porque así lo pide literalmente el
-enunciado de la actividad y el material de clase (diapositiva 18:
-*«La base puede vivir en `data/ferreteria.db`»*). El nombre viene del
-ejemplo de ferretería que usa el docente; el contenido, en cambio,
-corresponde al proyecto **Electric Life** (equipos solares).
+El enunciado y el material de clase proponen el nombre `ferreteria.db`
+(diapositiva 18: *«La base puede vivir en data/ferreteria.db»*), porque el
+ejemplo del docente es una ferretería.
+
+En este proyecto el archivo se llama **`electric_life.db`**, adaptado al
+tema del Proyecto Integrador (sistemas solares). Lo único que cambia es el
+nombre del archivo: la ubicación (`data/`), la estructura de las tablas y
+el funcionamiento son exactamente los que pide la actividad.
 
 ---
 
@@ -55,7 +58,7 @@ Semana 12/
 ├── requirements.txt
 │
 ├── data/
-│   └── ferreteria.db       # ⭐ NUEVO · base de datos local
+│   └── electric_life.db    # ⭐ NUEVO · base de datos local
 │
 ├── forms/                  # Sin cambios respecto a la Semana 11
 │   ├── __init__.py
@@ -123,7 +126,7 @@ python app.py
 
 Abre `http://127.0.0.1:5000`
 
-La base de datos se crea sola en `data/ferreteria.db` la primera vez.
+La base de datos se crea sola en `data/electric_life.db` la primera vez.
 **No necesita XAMPP ni ningún servidor externo**: SQLite es un solo archivo.
 
 ---
