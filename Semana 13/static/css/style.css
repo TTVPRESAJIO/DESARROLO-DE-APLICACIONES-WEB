@@ -1,0 +1,1373 @@
+/*
+Theme Name: Electric Life IHC
+Theme URI: https://github.com/TTVPRESAJIO/DESARROLO-DE-APLICACIONES-WEB
+Author: Daniel Fernando Allacuri Quilligana
+Author URI: https://github.com/TTVPRESAJIO
+Description: Tema de WordPress para el proyecto Electric Life. Reproduce el diseno de la Semana 8 de Desarrollo de Aplicaciones Web y le aplica los principios de Interaccion Humano-Computador: heuristicas de Nielsen, WCAG 2.1 (POUR), teoria de la carga cognitiva y el modelo de las siete etapas de accion de Norman.
+Version: 1.8.1
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: electric-life-ihc
+Tags: accessibility-ready, custom-menu, responsive-layout, education
+*/
+
+/* =====================================================================
+   ELECTRIC LIFE IHC - style.css
+   ---------------------------------------------------------------------
+   Base tomada de "style SEMANA 8.css" (Desarrollo de Aplicaciones Web).
+   Se conserva la identidad visual original y se anade una CAPA IHC con
+   las mejoras de usabilidad y accesibilidad exigidas por la asignatura.
+
+   Cada bloque de la capa IHC esta anotado con:
+     [Nx] = heuristica de Nielsen numero x
+     [POUR: P/O/C/R] = principio WCAG 2.1 (Perceptible, Operable,
+                       Comprensible, Robusto)
+     [CC] = reduccion de carga cognitiva extrinseca
+===================================================================== */
+
+/* =============================================
+   VARIABLES Y BASE
+   [N4] Consistencia y estandares: un unico
+   sistema de tokens para todo el sitio.
+============================================= */
+:root {
+    --verde: #2e7d32;
+    --verde-claro: #43a047;
+    --verde-oscuro: #1b5e20;   /* IHC: variante con contraste AA sobre blanco */
+    --amarillo: #fbc02d;
+    --amarillo-oscuro: #8a6500; /* IHC: texto amarillo legible sobre claro */
+    --oscuro: #1c2833;
+    --gris-bg: #f4f6f7;
+    --blanco: #ffffff;
+    --texto: #34495e;
+    --texto-fuerte: #263238;   /* IHC: contraste 4.5:1 minimo */
+    --sombra: 0 4px 18px rgba(0,0,0,0.10);
+
+    /* Capa IHC */
+    --foco: #0b5ed7;
+    --error: #b02a37;
+    --exito: #146c43;
+    --radio: 12px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* [O] Operable: compensa el navbar fijo al saltar por anclas,
+       para que el título de destino no quede oculto. */
+    scroll-padding-top: 90px;
+}
+
+/* Con la barra de administración de WordPress hay 32 px más que compensar. */
+body.admin-bar {
+    scroll-padding-top: 122px;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: var(--texto);
+    background-color: var(--gris-bg);
+    /* [CC] Interlineado amplio: reduce el esfuerzo de lectura. */
+    line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+/* [O] Operable 2.3.3 - respeta a quien pidio menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* =====================================================================
+   CAPA IHC 1 - NAVEGACION POR TECLADO Y FOCO VISIBLE
+   [N1] Visibilidad del estado del sistema: el usuario siempre sabe
+        donde esta parado el foco.
+   [POUR: O] Operable 2.1.1 (teclado) y 2.4.7 (foco visible).
+===================================================================== */
+
+/* Enlace de salto al contenido: primer tabulador de la pagina. */
+.ihc-skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 2000;
+    background: var(--amarillo);
+    color: var(--oscuro);
+    font-weight: 700;
+    padding: 0.85rem 1.5rem;
+    border-radius: 0 0 var(--radio) 0;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+
+.ihc-skip-link:focus {
+    left: 0;
+    outline: 3px solid var(--oscuro);
+    outline-offset: 2px;
+}
+
+/* Foco visible universal y de alto contraste. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--foco);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Sobre fondos oscuros el foco cambia a amarillo para mantener contraste. */
+.navbar-custom a:focus-visible,
+.navbar-custom button:focus-visible,
+.hero-section a:focus-visible,
+footer a:focus-visible {
+    outline: 3px solid var(--amarillo);
+    outline-offset: 3px;
+}
+
+/* Texto solo para lectores de pantalla (patron oficial de WordPress). */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+    background-color: var(--amarillo);
+    clip: auto !important;
+    clip-path: none;
+    color: var(--oscuro);
+    display: block;
+    font-weight: 700;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+}
+
+/* =============================================
+   HEADER / HERO
+============================================= */
+.hero-section {
+    background: linear-gradient(135deg, var(--oscuro) 0%, var(--verde) 100%);
+    color: var(--blanco);
+    padding: 5rem 1rem 4rem;
+    text-align: center;
+    border-bottom: 4px solid var(--amarillo);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.hero-section > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-kicker {
+    color: var(--amarillo);
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.hero-section h1 span {
+    color: var(--amarillo);
+}
+
+.hero-section p.lead {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.btn-solar {
+    background-color: var(--amarillo);
+    color: var(--oscuro);
+    font-weight: 700;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(251,192,45,0.4);
+}
+
+.btn-solar:hover,
+.btn-solar:focus {
+    background-color: #f9a825;
+    color: var(--oscuro);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(251,192,45,0.5);
+}
+
+.btn-outline-solar {
+    border: 2px solid var(--amarillo);
+    color: var(--amarillo);
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-solar:hover,
+.btn-outline-solar:focus {
+    background-color: var(--amarillo);
+    color: var(--oscuro);
+    transform: translateY(-2px);
+}
+
+/* [O] Area tactil minima de 44x44 px (WCAG 2.5.5) en todos los botones. */
+.btn,
+.social-btn,
+.navbar-toggler {
+    min-height: 44px;
+}
+
+/* =============================================
+   NAVBAR
+   [N1] El enlace activo indica la seccion actual.
+   [N6] Reconocer antes que recordar: el menu esta
+        siempre visible (sticky), no hay que memorizarlo.
+============================================= */
+.navbar-custom {
+    background-color: var(--oscuro) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.navbar-custom .navbar-brand {
+    color: var(--amarillo) !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255,255,255,0.92) !important;
+    font-weight: 600;
+    padding: 0.75rem 1.2rem !important;
+    transition: color 0.2s;
+    position: relative;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link:focus,
+.navbar-custom .nav-link.active {
+    color: var(--amarillo) !important;
+}
+
+/* [N1] Subrayado del enlace activo: senal redundante al color,
+   para no depender solo del color (WCAG 1.4.1). */
+.navbar-custom .nav-link.active::after {
+    content: '';
+    position: absolute;
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 0.35rem;
+    height: 3px;
+    background: var(--amarillo);
+    border-radius: 2px;
+}
+
+/* Corrección: cuando hay sesión iniciada, WordPress coloca su propia
+   barra de administración fija en la parte superior. Sin este ajuste, la
+   barra de navegación del sitio queda parcialmente oculta debajo de ella
+   y el menú aparece cortado por la mitad.
+   La barra de WordPress mide 32 px en escritorio y 46 px en pantallas
+   medianas; por debajo de 600 px deja de ser fija, así que no hay que
+   compensar nada. */
+body.admin-bar .navbar-custom {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .navbar-custom {
+        top: 46px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body.admin-bar .navbar-custom {
+        top: 0;
+    }
+}
+
+.navbar-toggler {
+    border-color: var(--amarillo) !important;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* =============================================
+   SECCIONES GENERALES
+============================================= */
+section {
+    padding: 4rem 0;
+}
+
+.section-title {
+    color: var(--verde-oscuro);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.section-divider {
+    width: 60px;
+    height: 4px;
+    background-color: var(--amarillo);
+    margin: 0 auto 2.5rem;
+    border-radius: 2px;
+}
+
+.section-divider.left {
+    margin: 0 0 2rem;
+}
+
+/* =============================================
+   INICIO - STATS RAPIDOS
+============================================= */
+#inicio {
+    background-color: var(--blanco);
+}
+
+.stat-card {
+    background: var(--gris-bg);
+    border-radius: var(--radio);
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 4px solid var(--verde);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra);
+}
+
+.stat-card .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--verde-oscuro);
+    line-height: 1;
+}
+
+.stat-card .stat-label {
+    font-size: 0.9rem;
+    color: var(--texto);
+    margin-top: 0.4rem;
+}
+
+/* =============================================
+   QUIENES SOMOS
+============================================= */
+#quienes-somos {
+    background-color: var(--gris-bg);
+}
+
+.about-img-wrapper {
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    border: 4px solid var(--verde);
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background-color: var(--verde);
+    color: var(--blanco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* =============================================
+   SERVICIOS - CARDS
+   [N6] Reconocer en vez de recordar: iconos + titulo
+        + descripcion corta en cada tarjeta.
+============================================= */
+#servicios {
+    background-color: var(--blanco);
+}
+
+.service-card {
+    border: none;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    border-top: 4px solid var(--amarillo);
+}
+
+.service-card:hover,
+.service-card:focus-within {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+}
+
+.service-card .card-icon {
+    font-size: 2.2rem;
+    color: var(--verde-oscuro);
+    margin-bottom: 1rem;
+}
+
+.service-card .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--oscuro);
+    font-size: 1.05rem;
+}
+
+.service-card .btn {
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* =============================================
+   SOLICITUDES DINAMICAS
+============================================= */
+#solicitudes {
+    background-color: var(--gris-bg);
+}
+
+.solicitud-form-card {
+    background: var(--blanco);
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+    padding: 2rem;
+    border-top: 5px solid var(--verde);
+}
+
+.contador-badge {
+    background: var(--verde);
+    color: var(--blanco);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.registro-card {
+    border-radius: var(--radio) !important;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.registro-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+.registro-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.btn-eliminar {
+    opacity: 0.75;
+    transition: opacity .2s;
+}
+
+.btn-eliminar:hover,
+.btn-eliminar:focus {
+    opacity: 1;
+}
+
+#mensaje-vacio {
+    color: #6c757d;
+}
+
+/* =============================================
+   CONTACTO
+============================================= */
+#contacto {
+    background-color: var(--blanco);
+}
+
+.contact-card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 2rem;
+    height: 100%;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--gris-bg);
+}
+
+.contact-info-item:last-of-type {
+    border-bottom: none;
+}
+
+.contact-info-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background-color: var(--verde);
+    color: var(--blanco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.contact-link {
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-link:hover,
+.contact-link:focus {
+    text-decoration: underline;
+    color: var(--verde);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 0.2rem rgba(46,125,50,0.25);
+}
+
+.btn-verde {
+    background-color: var(--verde);
+    color: var(--blanco);
+    font-weight: 700;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.btn-verde:hover,
+.btn-verde:focus {
+    background-color: var(--verde-claro);
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46,125,50,0.3);
+}
+
+.social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.social-btn:hover,
+.social-btn:focus {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.social-fb { background: #1877f2; color: #fff; }
+.social-ig { background: #c13584; color: #fff; }
+.social-li { background: #0a66c2; color: #fff; }
+.social-mail { background: var(--verde); color: #fff; }
+
+.social-btn:hover, .social-btn:focus { color: #fff; }
+
+/* =============================================
+   ASIDE (INFO ADICIONAL)
+============================================= */
+.aside-card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 1.8rem;
+    border-left: 5px solid var(--verde);
+    margin-bottom: 1.5rem;
+}
+
+.aside-card h5 {
+    color: var(--verde-oscuro);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.promo-badge {
+    display: inline-block;
+    background: var(--amarillo);
+    color: var(--oscuro);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 50px;
+    margin-bottom: 0.5rem;
+}
+
+/* =============================================
+   VIDEO
+============================================= */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+}
+
+/* =============================================
+   TOAST CONTAINER
+   [N1] Retroalimentacion inmediata y no intrusiva.
+============================================= */
+#toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 320px;
+}
+
+/* =============================================
+   FOOTER
+============================================= */
+footer.site-footer {
+    background-color: var(--oscuro);
+    color: rgba(255,255,255,0.85);
+    padding: 2rem 1rem;
+    text-align: center;
+    border-top: 3px solid var(--verde);
+    font-size: 0.9rem;
+}
+
+footer.site-footer strong {
+    color: var(--amarillo);
+}
+
+footer.site-footer a {
+    color: var(--amarillo);
+}
+
+/* =====================================================================
+   CAPA IHC 2 - COMPONENTES DE USABILIDAD ANADIDOS
+===================================================================== */
+
+/* --- Barra de progreso de lectura -------------------------------
+   [N1] Visibilidad del estado del sistema: el usuario ve cuanto
+        le falta de la pagina. */
+.ihc-progreso {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0;
+    background: linear-gradient(90deg, var(--amarillo), var(--verde-claro));
+    z-index: 1200;
+    transition: width .1s linear;
+}
+
+/* --- Migas de pan / orientacion ---------------------------------
+   [N1][N3] Donde estoy y como salgo de aqui. */
+.ihc-breadcrumb {
+    background: var(--gris-bg);
+    border-bottom: 1px solid #e3e8ea;
+    padding: 0.65rem 0;
+    font-size: 0.875rem;
+}
+
+.ihc-breadcrumb a {
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.ihc-breadcrumb a:hover,
+.ihc-breadcrumb a:focus {
+    text-decoration: underline;
+}
+
+/* --- Boton volver arriba ----------------------------------------
+   [N3] Control y libertad del usuario: siempre hay una salida. */
+.ihc-top {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--verde);
+    color: var(--blanco);
+    font-size: 1.25rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
+
+.ihc-top.visible { display: inline-flex; }
+
+.ihc-top:hover,
+.ihc-top:focus {
+    background: var(--verde-oscuro);
+    transform: translateY(-3px);
+}
+
+/* --- Campo trampa anti-robots -------------------------------------
+   Se retira del arbol de accesibilidad con display:none, no con
+   .screen-reader-text + aria-hidden. Un control de formulario dentro de
+   un contenedor con aria-hidden incumple WCAG 4.1.2, y ademas los
+   lectores de pantalla si leen el contenido de .screen-reader-text.
+   Los robots siguen cayendo porque leen el HTML, no el CSS. */
+.ihc-trampa {
+    display: none !important;
+}
+
+/* --- Formularios accesibles --------------------------------------
+   [N5] Prevencion de errores  [N9] Ayuda a reconocer y recuperarse
+   [POUR: C] Comprensible 3.3.1 / 3.3.2 / 3.3.3 */
+.ihc-obligatorio {
+    color: var(--error);
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.ihc-ayuda {
+    display: block;
+    font-size: 0.8rem;
+    color: #5a6b7b;
+    margin-top: 0.25rem;
+}
+
+.ihc-contador-caracteres {
+    font-size: 0.78rem;
+    color: #5a6b7b;
+    text-align: right;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.ihc-contador-caracteres.cerca-limite { color: #a15c00; font-weight: 600; }
+.ihc-contador-caracteres.en-limite   { color: var(--error); font-weight: 700; }
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--error);
+    border-width: 2px;
+}
+
+.invalid-feedback {
+    font-weight: 600;
+}
+
+/* Mensaje del sistema tras enviar un formulario.
+   [N1] Feedback explicito  [N9] Lenguaje llano, sin codigos. */
+.ihc-aviso {
+    border-radius: var(--radio);
+    border-left: 5px solid;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.ihc-aviso-exito {
+    background: #e8f5ec;
+    border-color: var(--exito);
+    color: #0f5132;
+}
+
+.ihc-aviso-error {
+    background: #fdecee;
+    border-color: var(--error);
+    color: #842029;
+}
+
+.ihc-aviso i { font-size: 1.3rem; line-height: 1.4; }
+
+/* --- Estado de carga / spinner ----------------------------------- */
+#servicios-cargando { color: var(--verde-oscuro); }
+#servicios-cargando .spinner-border { width: 3rem; height: 3rem; }
+
+/* --- Tabla comparativa ------------------------------------------- */
+.tabla-servicios-wrapper {
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+}
+
+.tabla-servicios thead {
+    background-color: var(--verde);
+    color: var(--blanco);
+}
+
+.tabla-servicios thead th {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border: none;
+}
+
+.tabla-servicios tbody tr { transition: background-color .2s; }
+.tabla-servicios .icono-celda { color: var(--verde-oscuro); font-size: 1.2rem; }
+
+/* --- Modal de detalles -------------------------------------------
+   [N3] Salida clara: cerrar con boton, con Escape o clic fuera. */
+.modal-header.modal-header-solar {
+    background: linear-gradient(135deg, var(--oscuro) 0%, var(--verde) 100%);
+    color: var(--blanco);
+    border-bottom: 3px solid var(--amarillo);
+}
+
+.modal-header-solar .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.modal-icono {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    border-radius: 50%;
+    background-color: var(--verde);
+    color: var(--blanco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+/* --- Boton detalle ------------------------------------------------ */
+.btn-detalle {
+    color: var(--verde-oscuro);
+    border: 1px solid var(--verde);
+    background: transparent;
+    transition: all .25s;
+}
+
+.btn-detalle:hover,
+.btn-detalle:focus {
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+/* --- Botón flotante de WhatsApp -----------------------------------
+   Se apila justo encima del botón de volver arriba, formando una
+   columna de acciones permanentes en la esquina inferior derecha.
+   [N4] Consistencia: misma forma, mismo tamaño y misma posición que el
+   botón que ya existía, para que se lean como un grupo. */
+.ihc-whatsapp {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 5rem;          /* 1.5rem del otro botón + 48px + separación */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #25D366;   /* verde oficial de WhatsApp */
+    color: #fff;
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 1050;
+    transition: background .2s, transform .2s;
+}
+
+.ihc-whatsapp:hover,
+.ihc-whatsapp:focus {
+    background: #1da851;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+/* Foco visible sobre el verde de WhatsApp: se usa el azul de foco del
+   sitio, que contrasta con ese fondo. WCAG 2.4.7 */
+.ihc-whatsapp:focus-visible {
+    outline: 3px solid var(--foco);
+    outline-offset: 3px;
+}
+
+@media (max-width: 576px) {
+    .ihc-whatsapp { right: 1rem; bottom: 4.5rem; }
+}
+
+/* Las tarjetas de contacto llevan height:100% para igualar su altura
+   dentro de la fila. Cuando hay dos apiladas en la misma columna, la
+   segunda se desborda fuera de la seccion. Esta variante deja que la
+   tarjeta mida lo que ocupa su contenido. */
+.contact-card.ihc-card-auto {
+    height: auto;
+}
+
+/* --- Mapa bajo consentimiento -------------------------------------
+   El aviso ocupa el mismo espacio que ocupara el mapa, para que la
+   pagina no de un salto al cargarlo. */
+.ihc-mapa {
+    position: relative;
+    padding-bottom: 65%;
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radio);
+    border: 3px solid var(--verde);
+    background: linear-gradient(135deg, var(--oscuro) 0%, var(--verde) 100%);
+}
+
+.ihc-mapa iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+}
+
+.ihc-mapa-aviso {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.25rem;
+    color: var(--blanco);
+}
+
+.ihc-mapa-aviso h4 {
+    color: var(--amarillo);
+    font-weight: 700;
+}
+
+.ihc-mapa-aviso p {
+    font-size: 0.82rem;
+    max-width: 42ch;
+    opacity: 0.95;
+}
+
+.ihc-mapa-icono {
+    font-size: 2.4rem;
+    color: var(--amarillo);
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .ihc-mapa-aviso p { font-size: 0.76rem; }
+    .ihc-mapa-icono { font-size: 1.9rem; }
+}
+
+/* --- Video bajo consentimiento ------------------------------------
+   El aviso ocupa exactamente el mismo espacio que ocupara el video,
+   para que la pagina no de un salto al cargarlo. [N1] Estabilidad
+   visual: un salto de contenido desorienta y hace pulsar donde no se
+   queria. */
+.ihc-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    background: linear-gradient(135deg, var(--oscuro) 0%, var(--verde) 100%);
+}
+
+.ihc-video iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+}
+
+.ihc-video-aviso {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--blanco);
+}
+
+.ihc-video-aviso h4 {
+    color: var(--amarillo);
+    font-weight: 700;
+}
+
+.ihc-video-aviso p {
+    font-size: 0.85rem;
+    max-width: 46ch;
+    opacity: 0.95;
+}
+
+.ihc-video-icono {
+    font-size: 2.6rem;
+    color: var(--amarillo);
+    margin-bottom: 0.6rem;
+}
+
+.ihc-video-nota {
+    font-size: 0.78rem !important;
+    opacity: 0.75 !important;
+}
+
+@media (max-width: 576px) {
+    .ihc-video-aviso p { font-size: 0.78rem; }
+    .ihc-video-icono { font-size: 2rem; }
+}
+
+/* --- Transcripción del video --------------------------------------
+   Alternativa textual plegable. Se mantiene cerrada para no competir
+   con el video, pero siempre visible y accesible por teclado.
+   [N8] Diseño minimalista sin sacrificar contenido.
+   WCAG 2.1: 1.2.1 Alternativa para medios (Perceptible). */
+.ihc-transcripcion {
+    background: var(--gris-bg);
+    border-radius: var(--radio);
+    border-left: 4px solid var(--verde);
+    padding: 0.85rem 1.1rem;
+    font-size: 0.9rem;
+}
+
+.ihc-transcripcion summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    list-style-position: outside;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.ihc-transcripcion summary:hover {
+    text-decoration: underline;
+}
+
+.ihc-transcripcion summary:focus-visible {
+    outline: 3px solid var(--foco);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.ihc-transcripcion-cuerpo {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid #dfe5e7;
+    color: var(--texto);
+}
+
+.ihc-transcripcion-cuerpo ul {
+    padding-left: 1.2rem;
+}
+
+/* --- Panel de accesibilidad del usuario ---------------------------
+   [N7] Flexibilidad y eficiencia de uso.
+   [POUR: P] El usuario ajusta la interfaz a su capacidad visual. */
+.ihc-a11y {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ihc-a11y button {
+    width: 46px;
+    height: 46px;
+    border: none;
+    background: var(--oscuro);
+    color: var(--blanco);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.ihc-a11y button:first-child { border-radius: 0 var(--radio) 0 0; }
+.ihc-a11y button:last-child  { border-radius: 0 0 var(--radio) 0; }
+
+.ihc-a11y button:hover,
+.ihc-a11y button:focus {
+    background: var(--verde);
+}
+
+.ihc-a11y button[aria-pressed="true"] {
+    background: var(--amarillo);
+    color: var(--oscuro);
+}
+
+/* Modo de alto contraste activable por el usuario. */
+body.ihc-alto-contraste {
+    --texto: #000000;
+    --texto-fuerte: #000000;
+    --gris-bg: #ffffff;
+    background: #ffffff;
+}
+
+body.ihc-alto-contraste .text-muted { color: #333 !important; }
+body.ihc-alto-contraste .stat-card,
+body.ihc-alto-contraste .service-card,
+body.ihc-alto-contraste .contact-card,
+body.ihc-alto-contraste .aside-card,
+body.ihc-alto-contraste .solicitud-form-card {
+    border: 2px solid #000;
+    box-shadow: none;
+}
+
+body.ihc-alto-contraste .hero-section {
+    background: #000;
+}
+
+/* Escala tipografica ajustable por el usuario. */
+body.ihc-texto-grande { font-size: 1.125rem; }
+body.ihc-texto-grande .hero-section h1 { font-size: 3.4rem; }
+body.ihc-texto-grande .section-title { font-size: 2.1rem; }
+
+/* =====================================================================
+   CAPA IHC 3 - AVISO DE COOKIES Y ENLACES LEGALES
+   ---------------------------------------------------------------------
+   El plugin Complianz gestiona el consentimiento, pero llega con su
+   propio aspecto azul de fabrica. Aqui se integra en el sistema visual
+   del sitio, porque un aviso que parece pegado de otra web genera
+   desconfianza justo en el momento en que se pide una decision.
+   [N4] Consistencia y estandares.
+===================================================================== */
+
+/* --- Enlaces legales del pie -------------------------------------- */
+.ihc-legal {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 1.1rem;
+    font-size: 0.85rem;
+}
+
+.ihc-legal a,
+.ihc-legal button {
+    color: rgba(255,255,255,0.85);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.ihc-legal a:hover,
+.ihc-legal a:focus,
+.ihc-legal button:hover,
+.ihc-legal button:focus {
+    color: var(--amarillo);
+}
+
+/* El enlace de preferencias se distingue con un icono, porque no es un
+   documento que se lee sino una accion que se ejecuta. [N2] */
+.ihc-legal-consentimiento a::before,
+.ihc-legal-consentimiento button::before {
+    content: '\F3E5';
+    font-family: 'bootstrap-icons';
+    margin-right: 0.35rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* --- Banner de consentimiento ------------------------------------- */
+.cmplz-cookiebanner {
+    border-radius: var(--radio) !important;
+    border: none !important;
+    border-top: 4px solid var(--amarillo) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25) !important;
+    font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.cmplz-cookiebanner .cmplz-title,
+.cmplz-cookiebanner .cmplz-header .cmplz-title {
+    font-family: 'Poppins', sans-serif !important;
+    color: var(--verde-oscuro) !important;
+    font-weight: 700 !important;
+}
+
+.cmplz-cookiebanner .cmplz-body,
+.cmplz-cookiebanner .cmplz-message {
+    color: var(--texto) !important;
+}
+
+/* Aceptar: accion principal, en el verde de la marca. */
+.cmplz-cookiebanner .cmplz-btn.cmplz-accept {
+    background-color: var(--verde) !important;
+    border-color: var(--verde) !important;
+    color: #fff !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+}
+
+.cmplz-cookiebanner .cmplz-btn.cmplz-accept:hover {
+    background-color: var(--verde-claro) !important;
+}
+
+/* Denegar: mismo peso visual que aceptar, no una opcion escondida.
+   [Etica] Un boton de rechazo mas discreto que el de aceptar es un
+   patron oscuro: empuja a consentir sin querer. */
+.cmplz-cookiebanner .cmplz-btn.cmplz-deny {
+    background-color: transparent !important;
+    border: 2px solid var(--verde) !important;
+    color: var(--verde-oscuro) !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+}
+
+.cmplz-cookiebanner .cmplz-btn.cmplz-deny:hover {
+    background-color: var(--gris-bg) !important;
+}
+
+.cmplz-cookiebanner .cmplz-btn.cmplz-view-preferences,
+.cmplz-cookiebanner .cmplz-btn.cmplz-save-preferences {
+    background-color: transparent !important;
+    border: 1px solid #b9c2c8 !important;
+    color: var(--texto) !important;
+    border-radius: 50px !important;
+}
+
+/* Area tactil minima tambien en el aviso. WCAG 2.5.5 */
+.cmplz-cookiebanner .cmplz-btn {
+    min-height: 44px !important;
+}
+
+/* Foco visible dentro del aviso. WCAG 2.4.7 */
+.cmplz-cookiebanner a:focus-visible,
+.cmplz-cookiebanner button:focus-visible {
+    outline: 3px solid var(--foco) !important;
+    outline-offset: 3px !important;
+}
+
+.cmplz-cookiebanner .cmplz-links a {
+    color: var(--verde-oscuro) !important;
+}
+
+/* =============================================
+   MEDIA QUERIES (PC, tablet, celular)
+   Diseno adaptativo y responsivo: la interfaz se
+   reajusta al dispositivo sin perder funciones.
+============================================= */
+@media (max-width: 991.98px) {
+    .ihc-a11y { display: none; }
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 { font-size: 2rem; }
+    .hero-section p.lead { font-size: 1rem; }
+    .stat-card .stat-number { font-size: 1.8rem; }
+    .about-img-wrapper { margin-bottom: 2rem; }
+    .hero-btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .hero-btns .btn { width: 100%; max-width: 320px; }
+}
+
+@media (max-width: 576px) {
+    section { padding: 2.5rem 0; }
+    .contact-card { padding: 1.2rem; }
+    .solicitud-form-card { padding: 1.2rem; }
+    .ihc-top { right: 1rem; bottom: 1rem; }
+    #toast-container { right: 0.75rem; left: 0.75rem; max-width: none; }
+}
+
+/* =============================================
+   IMPRESION - version limpia del sitio
+============================================= */
+@media print {
+    .navbar-custom, .ihc-top, .ihc-a11y, .ihc-progreso,
+    #toast-container, .video-container, form { display: none !important; }
+    .hero-section { background: none; color: #000; border-bottom: 2px solid #000; }
+    body { background: #fff; }
+}

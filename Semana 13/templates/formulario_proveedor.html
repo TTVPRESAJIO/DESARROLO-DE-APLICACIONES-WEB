@@ -1,0 +1,52 @@
+{# ===================================================================
+   formulario_proveedor.html · sirve para registrar y para editar
+=================================================================== #}
+{% extends "base.html" %}
+{% from "components/campos.html" import campo, encabezado_formulario %}
+
+{% block title %}Electric Life - {{ titulo }}{% endblock %}
+
+{% block content %}
+
+{{ encabezado_formulario(modo, 'proveedor', 'bi-truck', url_for('proveedores'), form) }}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+
+        <form method="post" action="{{ accion }}" novalidate>
+
+            {{ form.hidden_tag() }}
+
+            <div class="row g-3">
+
+                {{ campo(form.empresa, 'Nombre comercial del proveedor.', 'col-md-6') }}
+
+                {{ campo(form.contacto, 'Persona con la que se coordinan los pedidos.', 'col-md-6') }}
+
+                {{ campo(form.correo, '', 'col-md-6') }}
+
+                {{ campo(form.telefono, '', 'col-md-6') }}
+
+                {{ campo(form.ciudad, '', 'col-md-6') }}
+
+                {{ campo(form.suministra, 'Que tipo de equipos entrega.', 'col-md-6') }}
+
+                <div class="col-12 d-flex gap-2 flex-wrap mt-2">
+                    {{ form.submit(class="btn btn-success") }}
+                    <a href="{{ url_for('proveedores') }}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% if registro is defined %}
+<p class="text-muted small mt-3">
+    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+    Editando el proveedor n.&deg; {{ registro.id }}.
+</p>
+{% endif %}
+
+{% endblock %}

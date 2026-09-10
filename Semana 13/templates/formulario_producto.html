@@ -1,0 +1,58 @@
+{# ===================================================================
+   formulario_producto.html
+   La MISMA plantilla sirve para registrar y para editar: cambia solo
+   la variable "modo" y la URL de destino ("accion").
+=================================================================== #}
+{% extends "base.html" %}
+{% from "components/campos.html" import campo, encabezado_formulario %}
+
+{% block title %}Electric Life - {{ titulo }}{% endblock %}
+
+{% block content %}
+
+{{ encabezado_formulario(modo, 'producto', 'bi-box-seam', url_for('productos'), form) }}
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+
+        {# method="post": los datos viajan en el cuerpo de la peticion #}
+        <form method="post" action="{{ accion }}" novalidate>
+
+            {# hidden_tag() imprime el token CSRF que protege el envio.
+               Sin el, Flask-WTF rechaza el formulario. #}
+            {{ form.hidden_tag() }}
+
+            <div class="row g-3">
+
+                {{ campo(form.nombre, 'Como aparecera en el catalogo.') }}
+
+                {{ campo(form.categoria, 'Agrupa el producto en el listado.', 'col-md-6') }}
+
+                {{ campo(form.precio, 'Precio unitario en dolares.', 'col-md-6') }}
+
+                {{ campo(form.stock, 'Un stock de 0 marca el producto como agotado.', 'col-md-6') }}
+
+                {{ campo(form.icono, 'Opcional. Nombre de un icono de Bootstrap Icons.', 'col-md-6') }}
+
+                {# Semana 13: clave foranea hacia proveedores #}
+                {{ campo(form.id_proveedor, 'Empresa que suministra este producto (tabla proveedores).', 'col-md-6') }}
+
+                <div class="col-12 d-flex gap-2 flex-wrap mt-2">
+                    {{ form.submit(class="btn btn-success") }}
+                    <a href="{{ url_for('productos') }}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% if registro is defined %}
+<p class="text-muted small mt-3">
+    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+    Editando el producto n.&deg; {{ registro.id }}.
+</p>
+{% endif %}
+
+{% endblock %}
