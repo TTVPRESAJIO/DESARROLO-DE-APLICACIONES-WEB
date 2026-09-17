@@ -1,0 +1,65 @@
+{# ===================================================================
+   campos.html · Macros para pintar campos de Flask-WTF
+   -------------------------------------------------------------------
+   Un solo macro sirve para TODOS los campos de TODOS los formularios:
+   pinta la etiqueta, el campo con clases Bootstrap y, debajo, los
+   mensajes que generan los validadores de WTForms.
+
+   Asi se evita repetir el mismo bloque HTML en cada campo y en cada
+   plantilla de formulario.
+=================================================================== #}
+
+{% macro campo(field, ayuda='', ancho='col-12') %}
+<div class="{{ ancho }}">
+
+    {{ field.label(class="form-label fw-semibold") }}
+    {% if field.flags.required %}<span class="text-danger" aria-hidden="true">*</span>{% endif %}
+
+    {# La clase is-invalid hace que Bootstrap pinte el campo en rojo #}
+    {% if field.type == 'SelectField' %}
+        {{ field(class="form-select" ~ (" is-invalid" if field.errors else "")) }}
+    {% else %}
+        {{ field(class="form-control" ~ (" is-invalid" if field.errors else "")) }}
+    {% endif %}
+
+    {% if ayuda %}
+        <small class="form-text text-muted d-block">{{ ayuda }}</small>
+    {% endif %}
+
+    {# Mensajes de los validadores, debajo del campo correspondiente #}
+    {% for error in field.errors %}
+        <div class="invalid-feedback d-block">
+            <i class="bi bi-exclamation-circle-fill me-1" aria-hidden="true"></i>{{ error }}
+        </div>
+    {% endfor %}
+
+</div>
+{% endmacro %}
+
+
+{# -------------------------------------------------------------------
+   Cabecera comun de las plantillas de formulario: titulo, resumen de
+   errores y enlace para volver al listado.
+------------------------------------------------------------------- #}
+{% macro encabezado_formulario(modo, nombre_modulo, icono, volver_url, form) %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h2 class="mb-0">
+        <i class="bi {{ icono }}" aria-hidden="true"></i>
+        {{ modo }} {{ nombre_modulo }}
+    </h2>
+    <a href="{{ volver_url }}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver al listado
+    </a>
+</div>
+
+{# Resumen de errores: aparece solo si la validacion fallo #}
+{% if form.errors %}
+<div class="alert alert-danger d-flex align-items-start" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5" aria-hidden="true"></i>
+    <div>
+        <strong>No se pudo guardar.</strong>
+        Revisa los {{ form.errors|length }} campo(s) marcados en rojo.
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
