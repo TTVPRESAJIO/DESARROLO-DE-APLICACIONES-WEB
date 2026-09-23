@@ -1,0 +1,73 @@
+{# ===================================================================
+   login.html · Inicio de sesion
+   Hereda de base.html para mantener la interfaz uniforme.
+=================================================================== #}
+{% extends "base.html" %}
+{% from "components/campos.html" import campo %}
+
+{% block title %}Electric Life - Iniciar sesion{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-body p-4">
+
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('static', filename='img/logo-electric-life.svg') }}"
+                         alt="" width="64" height="64" class="mb-2">
+                    <h1 class="h4 mb-1" style="color: var(--verde-oscuro);">Iniciar sesion</h1>
+                    <p class="text-muted small mb-0">
+                        Accede para administrar el sistema Electric Life.
+                    </p>
+                </div>
+
+                {% if form.errors %}
+                <div class="alert alert-danger d-flex align-items-start" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5" aria-hidden="true"></i>
+                    <div>Completa los campos marcados para continuar.</div>
+                </div>
+                {% endif %}
+
+                <form method="post" action="{{ url_for('login') }}" novalidate>
+
+                    {# Token CSRF: protege tambien el formulario de acceso #}
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3">
+                        {{ campo(form.usuario) }}
+                        {{ campo(form.password) }}
+
+                        <div class="col-12">
+                            <div class="form-check">
+                                {{ form.recordarme(class="form-check-input") }}
+                                {{ form.recordarme.label(class="form-check-label") }}
+                            </div>
+                        </div>
+
+                        <div class="col-12 d-grid">
+                            {{ form.submit(class="btn btn-verde") }}
+                        </div>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <p class="text-center small mb-0">
+                    No tienes cuenta todavia?
+                    <a href="{{ url_for('registro') }}" class="contact-link">Crear una cuenta</a>
+                </p>
+
+            </div>
+        </div>
+
+        <p class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Volver al sitio
+            </a>
+        </p>
+
+    </div>
+</div>
+{% endblock %}

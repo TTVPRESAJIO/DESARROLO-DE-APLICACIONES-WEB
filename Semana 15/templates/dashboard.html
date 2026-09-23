@@ -1,0 +1,141 @@
+{# ===================================================================
+   dashboard.html · Panel del usuario autenticado
+   Ruta protegida con @login_required: solo se ve con sesion abierta.
+=================================================================== #}
+{% extends "base.html" %}
+
+{% block title %}Electric Life - Panel{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h2 class="mb-0"><i class="bi bi-speedometer2"></i> Panel de administracion</h2>
+        {# current_user identifica a quien tiene la sesion abierta #}
+        <p class="text-muted mb-0">
+            Sesion iniciada como <strong>{{ current_user.nombre_completo }}</strong>
+            (<code>{{ current_user.usuario }}</code>)
+        </p>
+    </div>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Cerrar sesion
+    </a>
+</div>
+
+<!-- Resumen del sistema, leido de PostgreSQL -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <a href="{{ url_for('productos') }}" class="text-decoration-none">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_productos }}</div>
+                <div class="stat-label">Productos</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a href="{{ url_for('clientes') }}" class="text-decoration-none">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_clientes }}</div>
+                <div class="stat-label">Clientes</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a href="{{ url_for('proveedores') }}" class="text-decoration-none">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_proveedores }}</div>
+                <div class="stat-label">Proveedores</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-lg-3">
+        <a href="{{ url_for('facturacion') }}" class="text-decoration-none">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_facturas }}</div>
+                <div class="stat-label">Facturas</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- Accesos rapidos -->
+    <div class="col-lg-5">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="bi bi-lightning-charge-fill me-2" aria-hidden="true"></i>Accesos rapidos
+                </h5>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('producto_nuevo') }}" class="btn btn-success">
+                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Nuevo producto
+                    </a>
+                    <a href="{{ url_for('cliente_nuevo') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-person-plus me-1" aria-hidden="true"></i>Nuevo cliente
+                    </a>
+                    <a href="{{ url_for('factura_nueva') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-receipt me-1" aria-hidden="true"></i>Nueva factura
+                    </a>
+                    <a href="{{ url_for('test_db') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-database-check me-1" aria-hidden="true"></i>Comprobar la conexion
+                    </a>
+                </div>
+
+                <hr>
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                    Hay <strong>{{ total_solicitudes }}</strong> solicitud(es) recibidas
+                    desde la pagina principal.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usuarios registrados -->
+    <div class="col-lg-7">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="bi bi-people-fill me-2" aria-hidden="true"></i>
+                    Usuarios del sistema
+                    <span class="badge bg-secondary">{{ total_usuarios }}</span>
+                </h5>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr><th>#</th><th>Usuario</th><th>Nombre</th><th>Registro</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for u in usuarios %}
+                            <tr>
+                                <td>{{ u.id }}</td>
+                                <td>
+                                    <code>{{ u.usuario }}</code>
+                                    {% if u.id == current_user.id %}
+                                    <span class="badge bg-success ms-1">tu</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ u.nombre_completo }}</td>
+                                <td class="small text-muted">
+                                    {{ u.fecha_registro.strftime('%d/%m/%Y %H:%M') }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-muted small mt-3 mb-0">
+                    <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>
+                    Las contrasenas se guardan cifradas con hash: no se pueden
+                    leer ni siquiera desde la base de datos.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+# =====================================================================
+#  ELECTRIC LIFE · render.yaml
+#  ---------------------------------------------------------------------
+#  Plano de despliegue ("Blueprint") de Render para la aplicacion Flask
+#  de la Semana 15 del Proyecto Integrador.
+#
+#  Render busca este archivo en la RAIZ del repositorio, por eso esta
+#  aqui y no dentro de la carpeta "Semana 15". La linea rootDir le dice
+#  que el proyecto que hay que construir vive en esa subcarpeta.
+#
+#  Con este archivo, Render crea de una sola vez:
+#     · el servicio web que corre Flask con gunicorn
+#     · la base de datos PostgreSQL gestionada
+#     · la variable DATABASE_URL, conectando la una con el otro
+#
+#  Ninguna contrasena esta escrita aqui: SECRET_KEY la genera Render y
+#  los datos de la base los entrega el propio servicio de PostgreSQL.
+# =====================================================================
+
+services:
+  - type: web
+    name: electric-life
+    runtime: python
+    plan: free
+    region: oregon
+    rootDir: "Semana 15"
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      # Firma la cookie de sesion de Flask-Login y el token CSRF.
+      # generateValue hace que Render invente un valor aleatorio y lo
+      # guarde solo en su panel, nunca en el repositorio.
+      - key: SECRET_KEY
+        generateValue: true
+
+      # Render rellena esta variable con la cadena de conexion completa
+      # de la base de datos definida mas abajo.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: electric-life-db
+          property: connectionString
+
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+
+databases:
+  - name: electric-life-db
+    databaseName: electric_life_web
+    user: electric_life
+    plan: free
+    region: oregon
