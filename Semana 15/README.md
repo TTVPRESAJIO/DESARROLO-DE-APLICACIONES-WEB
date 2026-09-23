@@ -3,6 +3,9 @@
 Proyecto Integrador U4 · Avance 15/16
 Desarrollo de Aplicaciones Web · Universidad Estatal Amazónica
 
+**Aplicación publicada:** https://electric-life.onrender.com
+**Repositorio:** https://github.com/TTVPRESAJIO/DESARROLO-DE-APLICACIONES-WEB
+
 ---
 
 ## Qué cambió respecto a la Semana 14
@@ -202,12 +205,10 @@ se insertan si la tabla está vacía), así que repetirlo no rompe nada.
 
 ---
 
-## Pruebas realizadas
+## Pruebas realizadas en local
 
-La secuencia que exige el enunciado —**Login → Listar → Agregar → Modificar →
-Eliminar → consultar información relacionada → Cerrar sesión**— se comprobó
-entera, verificando cada paso **también directamente en PostgreSQL**, no solo en
-la pantalla:
+Antes de desplegar se comprobó la misma secuencia en el computador, verificando
+cada paso **también directamente en PostgreSQL**, no solo en la pantalla:
 
 | Paso | Qué se hizo | Resultado |
 |---|---|---|
@@ -241,25 +242,50 @@ la pantalla:
 
 ---
 
+## Prueba obligatoria sobre la aplicación desplegada
+
+Esta es la que exige el enunciado: hecha **desde https://electric-life.onrender.com**,
+no en local.
+
+| Paso | Resultado en Render |
+|---|---|
+| Ruta protegida sin sesión | ✅ `/productos` → `302 /login?next=%2Fproductos` |
+| Contraseña incorrecta | ✅ no abre sesión |
+| **Login** | ✅ *"Bienvenido, Daniel Allacuri Quilligana"* → panel |
+| **Listar** | ✅ 8 productos leídos del PostgreSQL de Render |
+| **Agregar** | ✅ "Panel Solar Render 500W" creado; 8 → 9 |
+| **Modificar** | ✅ precio → 249,99 · proveedor cambiado; sigue en 9 (es UPDATE) |
+| **Eliminar** | ✅ 9 → 8; quedan los ids 1-8, el de prueba ya no está |
+| **Relacionada** | ✅ `/facturacion` muestra el cliente de cada factura (JOIN) y suma $5570,00 |
+| Integridad referencial | ✅ no deja borrar un cliente con facturas |
+| **Cerrar sesión** | ✅ *"Sesion cerrada"*; `/productos` vuelve a pedir login |
+
+El despliegue se hizo con el Blueprint de la raíz: Render creó la base
+`electric-life-db` y el servicio `electric-life` en un solo paso, y el build
+tardó **1m09s**.
+
+---
+
 ## Despliegue en Render, paso a paso
 
-1. Entra en [render.com](https://render.com) e inicia sesión con la cuenta de GitHub.
+1. Entra en [render.com](https://render.com) e inicia sesión.
 2. **New → Blueprint**.
-3. Elige el repositorio `DESARROLO-DE-APLICACIONES-WEB`. Render detecta el
-   `render.yaml` de la raíz.
-4. Confirma. Render crea a la vez:
+3. En **Public Git Repository**, pega la URL del repositorio y pulsa *Continue*.
+   (También se puede conectar la cuenta de GitHub; eso además habilita el
+   *auto-deploy* en cada `push`, que con el repositorio público no está activo.)
+4. Ponle nombre al Blueprint y pulsa **Deploy Blueprint**. Render crea a la vez:
    - la base de datos PostgreSQL `electric-life-db`
    - el servicio web `electric-life`
    - la variable `DATABASE_URL`, que conecta los dos
    - la variable `SECRET_KEY`, con un valor aleatorio que genera Render
-5. Espera a que el build termine (unos minutos la primera vez).
+5. Espera a que el build termine.
 6. Abre la URL pública, entra a `/registro` y crea tu usuario.
 
 Las tablas y los datos de ejemplo se crean solos en el primer arranque.
 
 > **Sobre el plan gratuito:** el servicio se duerme tras un rato sin visitas, así
 > que la primera carga después de un tiempo puede tardar cerca de un minuto. No
-> está roto: está despertando.
+> está roto: está despertando. La base de datos gratuita de Render caduca al mes.
 
 ---
 
